@@ -28,14 +28,17 @@ export function CareIntro({ inView, durationMs, onComplete }: CareIntroProps) {
     ...care.intro.after.split(" ").map((w) => ({ kind: "word" as const, w })),
   ]
 
+  // Mobile: pin the intro near the top of the (tall, stacked) card so it's
+  // visible the moment the section enters, instead of centred far down in
+  // empty space. Desktop keeps it centred.
   return (
-    <div className="flex h-full items-center justify-center px-6">
-      <div className="inline-flex flex-col items-center gap-5">
+    <div className="flex h-full items-start justify-center px-6 pt-14 md:items-center md:pt-0">
+      <div className="inline-flex w-full max-w-[20rem] flex-col items-center gap-5 md:w-auto md:max-w-none">
         <motion.p
           variants={staggerWords}
           initial="hidden"
           animate={inView ? "visible" : "hidden"}
-          className="whitespace-nowrap text-center text-h3 font-semibold leading-none text-accent"
+          className="text-balance text-center text-h3 font-semibold leading-tight text-accent whitespace-normal md:whitespace-nowrap md:leading-none"
         >
           <motion.span
             variants={wordIn}
