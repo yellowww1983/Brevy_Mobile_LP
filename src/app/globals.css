@@ -152,8 +152,11 @@
   --container-max: 75rem;
 
   /* Hero phone. Device sits at 31.5% of the asset (right 40% is shadow);
-     shift right by 18.5% so the device — not the bbox — lands on H1 axis. */
-  --size-hero-phone: 46rem;
+     shift right by 18.5% so the device — not the bbox — lands on H1 axis.
+     Responsive: 46rem on desktop, 90vw on phones — so everything keyed to this
+     width (clover anchor, tagline pull) scales with the real device, instead of
+     the clover falling off a fixed 46rem on a shrunk phone. */
+  --size-hero-phone: min(46rem, 90vw);
   --size-hero-clover: 9rem;
   --hero-phone-shift: 18.5%;
   --hero-clover-bottom: 1.15; /* clover anchor as a multiple of phone width (sits on the bottom casing edge) */
@@ -218,6 +221,14 @@
   /* ---- Fonts (next/font variables injected on <html>) ---- */
   --font-sans: var(--font-rethink-sans), ui-sans-serif, system-ui, sans-serif;
   --font-serif: var(--font-hedvig-serif), ui-serif, Georgia, serif;
+}
+
+/* Phones: the device shrinks but the clover should stay prominent, so bump it
+   a touch above the desktop 9rem (it reads small otherwise). */
+@media (max-width: 767px) {
+  :root {
+    --size-hero-clover: 10rem;
+  }
 }
 
 /* ============================================================

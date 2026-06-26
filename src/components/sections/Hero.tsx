@@ -1,6 +1,7 @@
 "use client"
 
 import { useRef } from "react"
+import Image from "next/image"
 import {
   motion,
   useScroll,
@@ -93,7 +94,10 @@ export function Hero() {
           </Reveal>
         </Stack>
 
-        <div ref={stageRef} className="relative w-full">
+        {/* clip-x: on phones the device shift (18.5%) pushes the PNG's
+            transparent shadow past the screen edge, which would cause a
+            horizontal scroll. overflow-y stays visible (clip allows it). */}
+        <div ref={stageRef} className="relative w-full overflow-x-clip">
           {/* [0] orbit — concentric rings + floating tags, behind the phone */}
           <HeroOrbit />
 
@@ -128,13 +132,14 @@ export function Hero() {
               className="pointer-events-none absolute left-1/2 z-[45] -translate-x-1/2"
             >
               <Reveal blur inView={bottomInView} delay={0}>
+                {/* Desktop: animated glass webm (alpha). */}
                 <video
                   autoPlay
                   muted
                   loop
                   playsInline
                   aria-hidden
-                  className="size-[var(--size-hero-clover)] object-contain"
+                  className="hidden size-[var(--size-hero-clover)] object-contain md:block"
                 >
                   <source
                     src={assets.glassClover}
@@ -145,15 +150,28 @@ export function Hero() {
                     type='video/webm; codecs="vp8"'
                   />
                 </video>
+                {/* Mobile: static transparent PNG — iOS Safari renders webm
+                    alpha as a black box, so phones get the still frame. */}
+                <Image
+                  src={assets.glassCloverPng}
+                  alt=""
+                  aria-hidden
+                  width={448}
+                  height={448}
+                  className="size-[var(--size-hero-clover)] object-contain md:hidden"
+                />
               </Reveal>
             </div>
           )}
 
           {/* [4] headline + buttons — reveal on scroll-into-view (below the
               fold on load), staggered after the clover via the shared trigger */}
+          {/* Mobile sits the block just below the (proportionally larger)
+              clover with a clean gap; desktop keeps the -7rem overlap so the
+              tagline rides onto the phone's bottom casing. */}
           <div
             ref={bottomRef}
-            className="relative z-10 mx-auto -mt-[7rem] flex max-w-2xl flex-col items-center gap-8 text-center"
+            className="relative z-10 mx-auto mt-14 flex max-w-2xl flex-col items-center gap-8 text-center md:-mt-[7rem]"
           >
             <Reveal blur inView={bottomInView} delay={S * 1}>
               <p className="text-gradient-brevy max-w-2xl text-balance text-h3 font-semibold leading-tight">

@@ -22,5 +22,9 @@ export const assets = {
   appIcon: "", // /brand/brevy-app-icon.png (glass clover, incoming)
   glassClover: "/brevy-glass.webm", // animated glass clover (VP9, alpha)
   glassCloverVp8: "/brevy-glass-vp8.webm", // VP8 fallback
+  // Static frame of the glass clover, used on mobile: iOS Safari does not
+  // render webm alpha (the transparent video shows a black box), so phones
+  // get this transparent PNG instead of the animated webm.
+  glassCloverPng: "/brevy-glass.png",
   videoPoster: "", // /media/app-tour-poster.jpg (pending)
 } as const

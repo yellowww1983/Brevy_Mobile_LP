@@ -70,7 +70,10 @@ export function Header() {
         </p>
       </div>
 
-      <header className="section-gutter sticky top-0 z-50 -mb-[112px] pt-10">
+      {/* pt sets the gap above the pill; -mb pulls the hero up by the full
+          header height so the sticky nav overlays it. Mobile uses a smaller
+          gap so the pill sits closer to the top once the banner scrolls away. */}
+      <header className="section-gutter sticky top-0 z-50 -mb-[88px] pt-4 md:-mb-[112px] md:pt-10">
         <nav
           className={cn(
             "mx-auto flex w-full max-w-[816px] items-center justify-between rounded-lg px-6 py-4 transition-[background-color,box-shadow,backdrop-filter] duration-[var(--duration-base)] ease-[var(--ease-out)]",
