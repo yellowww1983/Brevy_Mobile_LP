@@ -4,6 +4,7 @@ import {
   VideoShowcase,
   CareComparison,
   GettingStarted,
+  SuperApp,
   StickyCta,
 } from "@/components/sections"
 
@@ -17,6 +18,7 @@ export default function HomePage() {
         <VideoShowcase />
         <CareComparison />
         <GettingStarted />
+        <SuperApp />
       </main>
       <StickyCta />
     </>

@@ -48,6 +48,11 @@
   --brevy-violet-200: #e9deff;     /* violet/200  — "hours" tag chip */
   /* olive-300 (#dce7cf) doubles as the "pay stub" tag chip */
 
+  /* super-app card tints (Figma 24995:1035 — one per scrollytelling step) */
+  --brevy-emerald-100: #cfe6de;    /* emerald/100 — trainings card */
+  --brevy-indigo-200: #c7d2fe;     /* indigo/200  — setup card */
+  --brevy-purple-200: #e9d5ff;     /* purple/200  — EVV card */
+
   /* neutrals — exact Tailwind values */
   --brevy-white: #ffffff;
   --brevy-neutral-100: #f5f5f5;
@@ -69,6 +74,13 @@
   /* Figma dark blocks (banner, video) are emerald/500, not the darkest stop */
   --color-surface-inverse: var(--brevy-green-deep);
   --color-surface-active: var(--brevy-olive-50); /* compare: highlighted row */
+  /* super-app per-card phone-column tints (Figma 24995:1035) */
+  --color-surface-violet: var(--brevy-violet-200);
+  --color-surface-amber: var(--brevy-yellow-200); /* pay */
+  --color-surface-sage: var(--brevy-olive-300); /* patients */
+  --color-surface-mint: var(--brevy-emerald-100); /* trainings */
+  --color-surface-indigo: var(--brevy-indigo-200); /* setup */
+  --color-surface-purple: var(--brevy-purple-200); /* EVV */
 
   /* ---- Semantic text ---- */
   /* Figma uses zinc/800 as primary text (nav, subheads, section headings) */
@@ -171,6 +183,28 @@
      mechanic): content scrolling through it dissolves. */
   --hero-glass-band-h: 13rem;
 
+  /* ---- Super-app scrollytelling (#6): sticky phone + screen-fall ----
+     Right phone column is position:sticky; left text blocks scroll. The active
+     block is full opacity, the rest dimmed. On step change the new UI screen
+     drops in from above and crossfades, clipped to the phone's screen rect. */
+  /* FIXED card height (Figma card is 1200×680). Caps to the viewport so the
+     pinned card always fits; the scroll distance lives in an invisible driver. */
+  --story-card-h: min(42.5rem, calc(100svh - 7rem));
+  /* Pin offset — vertically centre the card in the viewport, but never tuck it
+     under the nav (≥5.5rem). */
+  --story-pin-top: max(5.5rem, calc((100svh - var(--story-card-h)) / 2));
+  --story-step-scroll: 80vh; /* scroll length that advances one card (≈1 screen) */
+  --story-phone-w: 86%; /* hand width within the phone column (bleed mode) */
+  --story-mask-fade: 74%; /* where the hand's bottom fade begins */
+  --story-drop-ms: 600; /* screen fall-in duration (read in JS) */
+  --story-drop: 14%; /* fall distance, % of the screen height */
+  --story-screen-radius: 1.6rem; /* phone screen corner radius (clip) */
+  /* white-screen rectangle inside /phone-in-hand.png (measured from pixels) */
+  --story-screen-left: 32.4%;
+  --story-screen-top: 12.8%;
+  --story-screen-w: 28.6%;
+  --story-screen-h: 45.4%;
+
   /* ---- Hero orbit: concentric rings + 3 floating tags behind the phone ----
      Decorative layer, centred on the phone's optical device middle. Outer ring
      diameter and centre offset match Figma (680px ring around the device). */
@@ -244,6 +278,12 @@
   --color-surface-olive: var(--color-surface-olive);
   --color-surface-inverse: var(--color-surface-inverse);
   --color-surface-active: var(--color-surface-active);
+  --color-surface-violet: var(--color-surface-violet);
+  --color-surface-amber: var(--color-surface-amber);
+  --color-surface-sage: var(--color-surface-sage);
+  --color-surface-mint: var(--color-surface-mint);
+  --color-surface-indigo: var(--color-surface-indigo);
+  --color-surface-purple: var(--color-surface-purple);
 
   --color-foreground: var(--color-foreground);
   --color-foreground-muted: var(--color-foreground-muted);
@@ -410,6 +450,21 @@
   .rounded-leaf {
     border-radius: var(--radius-sm) var(--radius-lg) var(--radius-sm)
       var(--radius-lg);
+  }
+
+  /* Super-app phone: fade the hand's bottom (wrist) into the column gradient,
+     so it's anchored to the card bottom and dissolves (Figma 24993:925). */
+  .story-fade {
+    -webkit-mask-image: linear-gradient(
+      to bottom,
+      black var(--story-mask-fade),
+      transparent
+    );
+    mask-image: linear-gradient(
+      to bottom,
+      black var(--story-mask-fade),
+      transparent
+    );
   }
 
   /* Hero orbit tags — idle float (phase 2). Each tag sets its own period
