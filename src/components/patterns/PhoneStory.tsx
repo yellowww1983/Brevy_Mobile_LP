@@ -128,7 +128,7 @@ export function PhoneStory({
         aria-hidden
         fill
         sizes="22rem"
-        className="pointer-events-none object-contain"
+        className="story-fade pointer-events-none object-contain"
       />
       {overlay}
     </div>
