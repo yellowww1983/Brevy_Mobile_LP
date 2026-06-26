@@ -1,0 +1,5 @@
+export { Hero } from "./Hero"
+export { VideoShowcase } from "./VideoShowcase"
+export { CareComparison } from "./CareComparison"
+export { GettingStarted } from "./GettingStarted"
+export { StickyCta } from "./StickyCta"

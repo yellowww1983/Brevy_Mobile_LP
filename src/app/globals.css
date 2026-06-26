@@ -1,0 +1,494 @@
+@import "tailwindcss";
+
+/* ============================================================
+   BREVY DESIGN TOKENS
+
+   Source of truth: Figma "Brevy Website" variables
+   (file 2n63p266wr49k1FNXjT1uw), pulled via Figma MCP.
+
+   Brevy ships a bespoke brand palette (brand green, dark
+   emerald, warm olive and beige) that does NOT map to the
+   stock Tailwind palette. Per create-design-tokens rule, that
+   is the one sanctioned off-palette case: a client brand
+   system. Raw values live ONLY in this palette layer and are
+   documented below. Everything above this layer references
+   semantic tokens (bg-background, text-foreground, bg-accent),
+   never raw values. Components never see a hex.
+
+   Neutrals (zinc / neutral) ARE exact Tailwind values and are
+   kept under their Tailwind names for clean future syncs.
+   ============================================================ */
+
+:root {
+  /* ---- Brevy brand palette (Figma source, raw) ---- */
+  --brevy-green: #066e3d;          /* brand/500   — primary accent */
+  --brevy-green-deep: #023620;     /* emerald/500 — dark surface */
+  --brevy-green-deeper: #022e1b;   /* emerald/600 — dark surface */
+  --brevy-green-darkest: #012716;  /* emerald/700 — darkest surface */
+
+  --brevy-olive-soft: #e6eedc;     /* olive/200   — hero tint */
+  --brevy-olive: #d7e4c9;          /* olive/500   — soft surface */
+  --brevy-olive-deep: #b8c7aa;     /* olive/600   — soft border */
+  --brevy-olive-950: #3b4335;      /* olive/950   — dark olive outline */
+
+  --brevy-beige: #f5f2ef;          /* beige/500   — warm surface */
+
+  /* compare palette — soft olive (positive) + coral (negative) tints used
+     by the before/with-Brevy section */
+  --brevy-olive-50: #f8fbf5;       /* olive/50    — active row tint */
+  --brevy-olive-100: #f1f6ec;      /* olive/100   — positive chip top */
+  --brevy-olive-300: #dce7cf;      /* olive/300   — positive chip ring */
+  --brevy-olive-400: #d4e2c6;      /* olive/400   — callout card edge */
+  --brevy-red-50: #fef2f2;         /* red/50      — negative chip top */
+  --brevy-red-200: #fecaca;        /* red/200     — negative chip ring */
+  --brevy-red-500: #ef4444;        /* red/500     — negative label + icon */
+
+  /* hero floating-tag icon chips (pastel) */
+  --brevy-yellow-200: #fde4b2;     /* yellow/200  — "pay" tag chip */
+  --brevy-violet-200: #e9deff;     /* violet/200  — "hours" tag chip */
+  /* olive-300 (#dce7cf) doubles as the "pay stub" tag chip */
+
+  /* neutrals — exact Tailwind values */
+  --brevy-white: #ffffff;
+  --brevy-neutral-100: #f5f5f5;
+  --brevy-neutral-200: #e5e5e5;
+  --brevy-neutral-300: #d4d4d4;
+  --brevy-zinc-100: #f4f4f5;
+  --brevy-zinc-200: #e4e4e7;
+  --brevy-zinc-400: #a1a1aa;
+  --brevy-zinc-500: #71717a;
+  --brevy-zinc-700: #3f3f46;
+  --brevy-zinc-800: #27272a;
+  --brevy-zinc-900: #18181b;
+
+  /* ---- Semantic surfaces (light) ---- */
+  --color-background: var(--brevy-white);
+  --color-surface: var(--brevy-beige);
+  --color-surface-soft: var(--brevy-olive-soft);
+  --color-surface-olive: var(--brevy-olive); /* olive/500 — hero gradient top, nav bg */
+  /* Figma dark blocks (banner, video) are emerald/500, not the darkest stop */
+  --color-surface-inverse: var(--brevy-green-deep);
+  --color-surface-active: var(--brevy-olive-50); /* compare: highlighted row */
+
+  /* ---- Semantic text ---- */
+  /* Figma uses zinc/800 as primary text (nav, subheads, section headings) */
+  --color-foreground: var(--brevy-zinc-800);
+  --color-foreground-muted: var(--brevy-zinc-700);
+  --color-foreground-subtle: var(--brevy-zinc-500);
+  --color-foreground-inverse: var(--brevy-white);
+  --color-foreground-inverse-muted: var(--brevy-olive);
+
+  /* ---- Semantic borders ---- */
+  --color-border: var(--brevy-zinc-200);
+  --color-border-soft: var(--brevy-olive-deep);
+  --color-border-inverse: var(--brevy-green-deeper);
+  --color-divider: var(--brevy-neutral-200); /* compare: row/column dividers */
+  --color-border-field: var(--brevy-neutral-300); /* mock inputs / cards / badges */
+
+  /* ---- Compare feedback (positive olive / negative coral) ---- */
+  --color-positive-fill: var(--brevy-olive-100);
+  --color-positive-ring: var(--brevy-olive-300);
+  --color-positive-edge: var(--brevy-olive-400);
+  --color-negative: var(--brevy-red-500);
+  --color-negative-fill: var(--brevy-red-50);
+  --color-negative-ring: var(--brevy-red-200);
+
+  /* ---- Accent (brand green) ---- */
+  --color-accent: var(--brevy-green);
+  --color-accent-foreground: var(--brevy-white);
+  --color-accent-hover: var(--brevy-green-deep);
+  --color-accent-subtle: var(--brevy-olive-soft);
+  /* Deep emerald used for the nav "Talk to us" fill and store-button outlines */
+  --color-accent-deep: var(--brevy-green-deep);
+  /* Dark olive outline of the video play button */
+  --color-play-edge: var(--brevy-olive-950);
+
+  /* ---- Hero orbit (concentric rings + floating tag icon chips) ---- */
+  --color-hero-ring: var(--brevy-olive-deep); /* faint concentric line */
+  --color-tag-pay: var(--brevy-yellow-200);
+  --color-tag-hours: var(--brevy-violet-200);
+  --color-tag-stub: var(--brevy-olive-300);
+
+  /* ---- Focus ring ---- */
+  --color-ring: var(--brevy-green);
+
+  /* ---- Radius (Figma: xs2 sm6 lg10 2xl16 full) ---- */
+  --radius-sm: 0.375rem;
+  --radius-md: 0.625rem;
+  --radius-lg: 1rem;
+  --radius-xl: 1.5rem;
+  --radius-full: 9999px;
+  /* In-app mock UI (inputs, cards, badges) — shadcn 8px field radius. */
+  --radius-field: 0.5rem;
+
+  /* ---- Typography scale (Figma: 7xl..sm) ---- */
+  --text-display: clamp(2.5rem, 5vw + 1rem, 4.5rem);
+  --text-h1: clamp(2.25rem, 4vw + 1rem, 3.75rem);
+  --text-h2: clamp(1.875rem, 2.5vw + 0.5rem, 2.25rem);
+  --text-h3: clamp(1.5rem, 1.5vw + 0.75rem, 1.875rem);
+  --text-editorial: 1.25rem;
+  --text-body: 1rem;
+  --text-small: 0.875rem;
+  --text-label: 0.8125rem;
+
+  --leading-display: 1.05;
+  --leading-tight: 1.15;
+  --leading-body: 1.6;
+  --leading-snug: 1.45;
+
+  /* Hedvig serif headings use neutral tracking (Figma: 0) */
+  --tracking-display: 0em;
+  --tracking-label: 0.08em;
+
+  /* ---- Section rhythm ---- */
+  --space-section-tight: clamp(3rem, 6vw, 4rem);
+  --space-section-content: clamp(4rem, 9vw, 6rem);
+  /* Top value also clears the sticky nav that overlaps the hero (~112px). */
+  --space-section-hero: clamp(8.5rem, 12vw, 9rem);
+  /* Hero bottom is tighter than its top: the download row sits close to the
+     next section's heading, matching Figma's ~96px download→headline gap. */
+  --space-section-hero-bottom: clamp(1.5rem, 2.5vw, 2rem);
+  --gutter: clamp(1rem, 5vw, 2rem);
+  --container-max: 75rem;
+
+  /* Hero phone. Device sits at 31.5% of the asset (right 40% is shadow);
+     shift right by 18.5% so the device — not the bbox — lands on H1 axis. */
+  --size-hero-phone: 46rem;
+  --size-hero-clover: 9rem;
+  --hero-phone-shift: 18.5%;
+  --hero-clover-bottom: 1.15; /* clover anchor as a multiple of phone width (sits on the bottom casing edge) */
+  /* Compare-section phone uses the same shadowed mockup as the hero: the
+     device sits left of and above the PNG center (shadow + transparent margin
+     on the right and below), so nudge it right + down to optically centre the
+     frame. Measured at the device center (x 31.4%, y 41.9% of the PNG). */
+  --feature-phone-shift: 18.5%;
+  --feature-phone-shift-y: 8%;
+
+  /* Progressive-blur glass band, fixed to the viewport bottom (appzen
+     mechanic): content scrolling through it dissolves. */
+  --hero-glass-band-h: 13rem;
+
+  /* ---- Hero orbit: concentric rings + 3 floating tags behind the phone ----
+     Decorative layer, centred on the phone's optical device middle. Outer ring
+     diameter and centre offset match Figma (680px ring around the device). */
+  --hero-orbit-d: 45rem; /* outer ring diameter (≈720px) */
+  --hero-orbit-top: 24rem; /* orbit centre from the stage top (device middle) */
+  /* rings — line-draw from the top, splitting both ways down to the bottom */
+  --rings-draw-ms: 900; /* per-ring draw duration (read in JS) */
+  --rings-stagger-ms: 200; /* delay between rings, inner → outer (read in JS) */
+  /* tags — phase 1: drop in from above, then phase 2: idle float */
+  --hero-tags-drop: 120; /* entrance drop distance, px (read in JS) */
+  --hero-tags-drop-ms: 800; /* drop duration (read in JS) */
+  --hero-tags-stagger-ms: 150; /* delay between tags dropping (read in JS) */
+  --hero-tags-delay-ms: 600; /* hold after the rings start before tags drop */
+  --hero-float-amp: 2px; /* idle float amplitude (CSS keyframe) */
+  --hero-float-dur-1: 3s; /* per-tag float period — desynced so they drift */
+  --hero-float-dur-2: 3.6s;
+  --hero-float-dur-3: 4.2s;
+
+  /* ---- Elevation (Figma: shadow/lg, two layers) ---- */
+  --shadow-sm: 0 1px 2px 0 rgb(0 0 0 / 0.05);
+  --shadow-md: 0 4px 6px -2px rgb(0 0 0 / 0.08);
+  --shadow-lg: 0 4px 6px -4px rgb(0 0 0 / 0.1), 0 10px 15px -3px rgb(0 0 0 / 0.1);
+  --shadow-xl: 0 12px 24px -8px rgb(0 0 0 / 0.12), 0 24px 48px -12px rgb(0 0 0 / 0.12);
+  /* Figma navbar: shadow/lg two layers, blur halved per the CSS export */
+  --shadow-navbar: 0 10px 7.5px 0 rgb(0 0 0 / 0.1), 0 4px 3px 0 rgb(0 0 0 / 0.1);
+
+  /* Navbar glass-on-scroll (scroll-state layer; top state stays the Figma pill) */
+  --nav-glass-blur: 12px;
+  --nav-scroll-threshold: 90; /* px scrolled before the glass kicks in (read in JS) */
+
+  /* ---- Motion ---- */
+  --duration-fast: 150ms;
+  --duration-base: 250ms;
+  --duration-slow: 500ms;
+  --duration-beam: 5s; /* border-beam orbit */
+  --duration-pulse: 2.6s; /* play-button invite pulse */
+  --badge-cycle-ms: 4000; /* hero chip variant swap interval (read in JS) */
+  --badge-cycle-delay-ms: 2000; /* delay before the chip starts cycling */
+  --phone-cycle-ms: 3200; /* hero phone view crossfade interval (read in JS) */
+  --feature-cycle-ms: 4500; /* compare section: per-row auto-advance time */
+  --intro-duration: 4000; /* compare section: intro line hold before content (read in JS) */
+  --step1-type-speed: 120; /* getting-started: ms between password dots */
+  --step2-check-stagger: 600; /* getting-started: ms between checklist items checking */
+  --step3-fill-ms: 1800; /* getting-started: this-week bar fill + count-up duration */
+  --ease-out: cubic-bezier(0.16, 1, 0.3, 1);
+  --ease-in-out: cubic-bezier(0.65, 0, 0.35, 1);
+
+  /* ---- Fonts (next/font variables injected on <html>) ---- */
+  --font-sans: var(--font-rethink-sans), ui-sans-serif, system-ui, sans-serif;
+  --font-serif: var(--font-hedvig-serif), ui-serif, Georgia, serif;
+}
+
+/* ============================================================
+   THEME MAPPING (Tailwind v4 inline)
+   Exposes semantic tokens as utilities: bg-background,
+   text-foreground-muted, bg-accent, border-border, etc.
+   ============================================================ */
+
+@theme inline {
+  --color-background: var(--color-background);
+  --color-surface: var(--color-surface);
+  --color-surface-soft: var(--color-surface-soft);
+  --color-surface-olive: var(--color-surface-olive);
+  --color-surface-inverse: var(--color-surface-inverse);
+  --color-surface-active: var(--color-surface-active);
+
+  --color-foreground: var(--color-foreground);
+  --color-foreground-muted: var(--color-foreground-muted);
+  --color-foreground-subtle: var(--color-foreground-subtle);
+  --color-foreground-inverse: var(--color-foreground-inverse);
+  --color-foreground-inverse-muted: var(--color-foreground-inverse-muted);
+
+  --color-border: var(--color-border);
+  --color-border-soft: var(--color-border-soft);
+  --color-border-inverse: var(--color-border-inverse);
+  --color-divider: var(--color-divider);
+  --color-border-field: var(--color-border-field);
+
+  --color-positive-fill: var(--color-positive-fill);
+  --color-positive-ring: var(--color-positive-ring);
+  --color-positive-edge: var(--color-positive-edge);
+  --color-negative: var(--color-negative);
+  --color-negative-fill: var(--color-negative-fill);
+  --color-negative-ring: var(--color-negative-ring);
+
+  --color-accent: var(--color-accent);
+  --color-accent-foreground: var(--color-accent-foreground);
+  --color-accent-hover: var(--color-accent-hover);
+  --color-accent-subtle: var(--color-accent-subtle);
+  --color-accent-deep: var(--color-accent-deep);
+  --color-play-edge: var(--color-play-edge);
+
+  --color-hero-ring: var(--color-hero-ring);
+  --color-tag-pay: var(--color-tag-pay);
+  --color-tag-hours: var(--color-tag-hours);
+  --color-tag-stub: var(--color-tag-stub);
+
+  --color-ring: var(--color-ring);
+
+  --radius-sm: var(--radius-sm);
+  --radius-md: var(--radius-md);
+  --radius-lg: var(--radius-lg);
+  --radius-xl: var(--radius-xl);
+  --radius-full: var(--radius-full);
+  --radius-field: var(--radius-field);
+
+  --text-display: var(--text-display);
+  --text-h1: var(--text-h1);
+  --text-h2: var(--text-h2);
+  --text-h3: var(--text-h3);
+  --text-editorial: var(--text-editorial);
+  --text-body: var(--text-body);
+  --text-small: var(--text-small);
+  --text-label: var(--text-label);
+
+  --font-sans: var(--font-sans);
+  --font-serif: var(--font-serif);
+
+  --shadow-sm: var(--shadow-sm);
+  --shadow-md: var(--shadow-md);
+  --shadow-lg: var(--shadow-lg);
+  --shadow-xl: var(--shadow-xl);
+  --shadow-navbar: var(--shadow-navbar);
+
+  --container-max: var(--container-max);
+}
+
+/* ============================================================
+   RHYTHM + SURFACE UTILITIES
+   Consumed by the Section primitive. Components never write
+   raw padding or background; they pick a rhythm and a surface.
+   ============================================================ */
+
+@layer utilities {
+  .section-gutter {
+    padding-inline: var(--gutter);
+  }
+  .section-pad-tight {
+    padding-block: var(--space-section-tight);
+  }
+  .section-pad-content {
+    padding-block: var(--space-section-content);
+  }
+  .section-pad-hero {
+    padding-top: var(--space-section-hero);
+    padding-bottom: var(--space-section-hero-bottom);
+  }
+
+  .leading-display {
+    line-height: var(--leading-display);
+  }
+  .leading-body {
+    line-height: var(--leading-body);
+  }
+  .tracking-label {
+    letter-spacing: var(--tracking-label);
+  }
+
+  /* Hero tagline: left-to-right emerald->olive gradient clipped to text.
+     Stops mirror the Figma fill (emerald/700 -> emerald/500 -> olive/600 -> olive/200). */
+  .text-gradient-brevy {
+    background-image: linear-gradient(
+      to right,
+      var(--brevy-green-darkest) 4%,
+      var(--brevy-green-deep) 44%,
+      var(--brevy-olive-deep) 73%,
+      var(--brevy-olive-soft) 97%
+    );
+    -webkit-background-clip: text;
+    background-clip: text;
+    color: transparent;
+  }
+
+  /* Figma hero chip: white->neutral-100 gradient face with a hairline ring
+     and an inset bevel (top highlight, soft bottom shade). */
+  .chip-glass {
+    background-image: linear-gradient(
+      180deg,
+      var(--brevy-white) 1%,
+      var(--brevy-neutral-100) 99%
+    );
+    box-shadow:
+      0 0 1px 0 rgb(0 0 0 / 0.5),
+      inset 0 1px 1px 0 var(--brevy-white),
+      inset 0 -0.5px 2px 0 rgb(0 0 0 / 0.08);
+  }
+
+  /* Border-beam: a small accent arc orbits the border (raycast-style).
+     One accent, subtle, linear orbit; static under reduced motion. */
+  .border-beam {
+    position: relative;
+  }
+  .border-beam::before {
+    content: "";
+    position: absolute;
+    inset: 0;
+    border-radius: inherit;
+    padding: 1px;
+    background: conic-gradient(
+      from var(--beam-angle),
+      transparent 0%,
+      var(--color-accent) 5%,
+      transparent 15%
+    );
+    -webkit-mask:
+      linear-gradient(black, black) content-box,
+      linear-gradient(black, black);
+    -webkit-mask-composite: xor;
+    mask:
+      linear-gradient(black, black) content-box,
+      linear-gradient(black, black);
+    mask-composite: exclude;
+    animation: beam-orbit var(--duration-beam) linear infinite;
+    pointer-events: none;
+  }
+  @media (prefers-reduced-motion: reduce) {
+    .border-beam::before {
+      animation: none;
+    }
+  }
+
+  /* Play-button invite pulse: a ring expands outward and fades, on loop. */
+  .play-ping {
+    animation: play-ping var(--duration-pulse) var(--ease-out) infinite;
+  }
+
+  /* Figma "leaf" corner: rounded on TR+BL (16px), sharp on TL+BR (6px).
+     border-radius order is TL TR BR BL. */
+  .rounded-leaf {
+    border-radius: var(--radius-sm) var(--radius-lg) var(--radius-sm)
+      var(--radius-lg);
+  }
+
+  /* Hero orbit tags — idle float (phase 2). Each tag sets its own period
+     (--hero-float-dur) and a delay so the bob starts only once it has landed;
+     they drift apart because the periods differ. Reduced motion stops it via
+     the global prefers-reduced-motion rule. */
+  .hero-float {
+    animation: hero-float var(--hero-float-dur, 3s) var(--ease-in-out) infinite;
+    animation-delay: var(--hero-float-delay, 0ms);
+  }
+  @keyframes hero-float {
+    0%,
+    100% {
+      transform: translateY(0);
+    }
+    25% {
+      transform: translateY(calc(var(--hero-float-amp) * -1));
+    }
+    75% {
+      transform: translateY(var(--hero-float-amp));
+    }
+  }
+}
+
+/* ============================================================
+   BASE
+   ============================================================ */
+
+/* In @layer base so border-* utilities (e.g. border-accent-deep) can
+   override this default border colour. */
+@layer base {
+  * {
+    border-color: var(--color-border);
+  }
+}
+
+body {
+  background: var(--color-background);
+  color: var(--color-foreground);
+  font-family: var(--font-sans);
+  font-feature-settings: "rlig" 1, "calt" 1;
+  -webkit-font-smoothing: antialiased;
+  text-rendering: optimizeLegibility;
+}
+
+.font-display {
+  font-family: var(--font-serif);
+  font-weight: 400;
+  letter-spacing: var(--tracking-display);
+  line-height: var(--leading-display);
+}
+
+*:focus-visible {
+  outline: 2px solid var(--color-ring);
+  outline-offset: 2px;
+  border-radius: var(--radius-sm);
+}
+
+@media (prefers-reduced-motion: reduce) {
+  *,
+  *::before,
+  *::after {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+    scroll-behavior: auto !important;
+  }
+}
+
+/* Border-beam orbit angle (animatable custom property) */
+@property --beam-angle {
+  syntax: "<angle>";
+  initial-value: 0deg;
+  inherits: false;
+}
+
+@keyframes beam-orbit {
+  to {
+    --beam-angle: 360deg;
+  }
+}
+
+@keyframes play-ping {
+  0% {
+    transform: scale(1);
+    opacity: 0.3;
+  }
+  70%,
+  100% {
+    transform: scale(1.7);
+    opacity: 0;
+  }
+}
