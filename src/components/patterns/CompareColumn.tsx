@@ -68,7 +68,9 @@ export function CompareColumn({
         {items.map((text, index) => {
           const active = interactive && activeIndex === index
           const rowClass = cn(
-            "relative flex w-full items-center gap-4 border-b border-divider px-6 py-4 text-left transition-colors",
+            // min-h keeps every row the height of a two-line row, so a
+            // one-line row doesn't shrink and break the before/with alignment.
+            "relative flex min-h-[5.25rem] w-full items-center gap-4 border-b border-divider px-6 py-4 text-left transition-colors",
             index === 0 && "border-t",
             active && "bg-surface-active",
             interactive && "cursor-pointer",

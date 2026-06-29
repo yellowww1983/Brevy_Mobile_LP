@@ -15,7 +15,7 @@ export const hero = {
   ],
   title: "Your caregiver super app",
   subtitle:
-    "Your hours, your pay, your patients, and your trainings, finally in one place. No more hunting across emails, portals, and paperwork.",
+    "Everything about your patient’s care in one place - so you can focus on what really matters.",
   // Primary CTA sitting directly under the headline (Figma 24962:877).
   cta: { label: "Get started", href: links.enroll },
   // Decorative tags that float around the phone (Figma 24984:636/666/648).
@@ -23,8 +23,8 @@ export const hero = {
   orbit: {
     tags: [
       { icon: "dollar", tone: "pay", label: "Know your pay before payday" },
-      { icon: "hours", tone: "hours", label: "Your hours always accurate" },
-      { icon: "stub", tone: "stub", label: "Every pay stub, in one place" },
+      { icon: "hours", tone: "hours", label: "Stay on top of every patient’s care" },
+      { icon: "stub", tone: "stub", label: "Feel confident on every visit" },
     ],
   },
   tagline: "Everything you need for caregiving. All in one place.",

@@ -18,7 +18,7 @@ export const care = {
       "You track how many authorized hours are left",
       "You remember what each payer and program needs",
       "You chase down paperwork, renewals, and deadlines",
-      "You're the one calling and texting ops to stay in the loop",
+      "You're the one calling and texting providers to stay in the loop",
     ],
   },
   after: {
@@ -27,8 +27,8 @@ export const care = {
     items: [
       "Your authorized hours, tracked automatically as you work",
       "What's due and what's next, surfaced before it's a problem",
-      "Paperwork and renewals handled in the background",
-      "One place where you, Brevy, and your patient's care stay in sync",
+      "Offload the paperwork and renewals",
+      "Your patient and their providers are always in sync",
     ],
   },
 } as const

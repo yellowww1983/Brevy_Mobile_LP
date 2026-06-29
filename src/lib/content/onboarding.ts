@@ -4,15 +4,14 @@
  */
 export const onboarding = {
   kicker: "Getting started",
-  title: "From your first call to your first visit",
-  subtitle:
-    "No training required. Brevy walks you through setup, one step at a time.",
+  title: "From enrollment to your first paycheck",
+  subtitle: "Brevy walks you through setup, one step at a time.",
   steps: [
     {
       step: "Step 1",
       title: "Get your invite",
       description:
-        "Once your background check clears, you get a text link. Tap it, set a password, and sign in with Face ID.",
+        "Once your background check clears, you get a text link. Tap it, set a password, and sign in easily.",
     },
     {
       step: "Step 2",

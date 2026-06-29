@@ -6,7 +6,7 @@
  */
 export const superApp = {
   chip: "Everything in one app",
-  title: "Less hunting. More caring.",
+  title: "Less coordinating. More caring.",
   // Cards, copy and per-card tints are 1:1 from Figma (24990:688 + 24995:1035).
   steps: [
     {
