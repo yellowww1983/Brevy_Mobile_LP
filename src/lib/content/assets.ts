@@ -27,4 +27,14 @@ export const assets = {
   // get this transparent PNG instead of the animated webm.
   glassCloverPng: "/brevy-glass.png",
   videoPoster: "", // /media/app-tour-poster.jpg (pending)
+  // Trust section — central shield is a transparent @4x glass render (glow
+  // baked in); the four item badges are SVGs (light circle + line icon + soft
+  // shadow, all inside a 328 viewBox, circle centred at 50%/33.8%).
+  trust: {
+    shield: "/secure@4x.png",
+    evv: "/evv.svg",
+    twoFactor: "/2fa.svg",
+    data: "/data.svg",
+    brevy: "/brevy.svg",
+  },
 } as const

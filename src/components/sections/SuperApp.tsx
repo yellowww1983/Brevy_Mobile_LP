@@ -101,7 +101,17 @@ export function SuperApp() {
     <Section id="super-app" rhythm="content" surface="default">
       <Stack size="xl" align="center">
         <Reveal blur>
-          <SectionHeader chip kicker={superApp.chip} title={superApp.title} />
+          <SectionHeader
+            chip
+            kicker={superApp.chip}
+            title={
+              <>
+                {superApp.title[0]}
+                <br />
+                {superApp.title[1]}
+              </>
+            }
+          />
         </Reveal>
 
         {/* Desktop pinned scrollytelling — hidden under reduced motion. The

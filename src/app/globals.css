@@ -230,6 +230,12 @@
   --shadow-xl: 0 12px 24px -8px rgb(0 0 0 / 0.12), 0 24px 48px -12px rgb(0 0 0 / 0.12);
   /* Figma navbar: shadow/lg two layers, blur halved per the CSS export */
   --shadow-navbar: 0 10px 7.5px 0 rgb(0 0 0 / 0.1), 0 4px 3px 0 rgb(0 0 0 / 0.1);
+  /* Trust section entrance: badges slide out from behind the shield, then each
+     label fades up once its circle lands (read in JS). */
+  --trust-slide-ms: 700; /* circle slide-out duration */
+  --trust-stagger-ms: 120; /* delay between inner pair and outer pair */
+  --trust-label-ms: 400; /* label fade-up duration */
+  --trust-label-rise: 8px; /* label travel */
 
   /* Navbar glass-on-scroll (scroll-state layer; top state stays the Figma pill) */
   --nav-glass-blur: 12px;
@@ -465,6 +471,26 @@
       black var(--story-mask-fade),
       transparent
     );
+  }
+
+  /* Trust section: thin horizontal "signal" lines radiating from the shield to
+     both sides (Figma 25073). 17px pitch, 1px soft-olive line; a horizontal
+     mask fades them out toward the outer items (strong at the shield → clear at
+     the edge), symmetric left/right. */
+  .trust-lines {
+    background-image: repeating-linear-gradient(
+      to bottom,
+      var(--brevy-olive-deep) 0 1px,
+      transparent 1px 17px
+    );
+  }
+  .trust-lines-out-left {
+    -webkit-mask-image: linear-gradient(to right, transparent, black);
+    mask-image: linear-gradient(to right, transparent, black);
+  }
+  .trust-lines-out-right {
+    -webkit-mask-image: linear-gradient(to left, transparent, black);
+    mask-image: linear-gradient(to left, transparent, black);
   }
 
   /* Hero orbit tags — idle float (phase 2). Each tag sets its own period

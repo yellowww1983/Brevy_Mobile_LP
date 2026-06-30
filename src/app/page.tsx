@@ -5,6 +5,7 @@ import {
   CareComparison,
   GettingStarted,
   SuperApp,
+  TrustCompliance,
   StickyCta,
 } from "@/components/sections"
 
@@ -19,6 +20,7 @@ export default function HomePage() {
         <CareComparison />
         <GettingStarted />
         <SuperApp />
+        <TrustCompliance />
       </main>
       <StickyCta />
     </>
