@@ -9,6 +9,7 @@ type ActionVariant =
   | "inverse"
   | "store"
   | "talk"
+  | "join"
 type ActionSize = "sm" | "md" | "lg"
 
 type BaseProps = {
@@ -51,6 +52,9 @@ const variantMap = {
   // Hover (Figma): white fill + emerald outline + emerald label. The border
   // is always present (blends with the emerald fill at rest = no shift).
   talk: "rounded-leaf border border-accent-deep font-normal bg-accent-deep text-foreground-inverse-muted hover:bg-background hover:text-accent-deep",
+  // Final-CTA on the dark card: the inverse of `talk` — olive fill, emerald
+  // label, leaf corners. Hover lightens the fill to white.
+  join: "rounded-leaf font-normal bg-surface-olive text-accent-deep hover:bg-background",
 } as const
 
 const sizeMap = {

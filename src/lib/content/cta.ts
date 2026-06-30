@@ -13,4 +13,7 @@ export const stickyCta = {
   ] satisfies { icon: IconName; label: string; href: string }[],
   /** Section the band starts showing from (matches the id below). */
   showFrom: "care",
+  /** Section that, once it enters view, hides the band — the Final CTA is the
+   *  real call to action, so the band shouldn't double up over it. */
+  hideAt: "final-cta",
 } as const

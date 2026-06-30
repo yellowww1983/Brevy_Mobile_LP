@@ -4,7 +4,7 @@ import { cn } from "@/lib/utils"
 type HeadingProps = {
   level: "display" | "h1" | "h2" | "h3"
   as?: "h1" | "h2" | "h3" | "h4" | "p"
-  tone?: "default" | "accent" | "inverse"
+  tone?: "default" | "accent" | "inverse" | "inverse-muted"
   className?: string // max-width / position only, never font-size
   children: ReactNode
 }
@@ -22,6 +22,7 @@ const toneMap = {
   default: "text-foreground",
   accent: "text-accent",
   inverse: "text-foreground-inverse",
+  "inverse-muted": "text-foreground-inverse-muted", // olive, on dark surfaces
 } as const
 
 /** Serif display headings (Hedvig). Size via `level`, tag via `as`. */

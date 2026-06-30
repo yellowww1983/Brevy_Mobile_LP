@@ -17,19 +17,28 @@ import { stickyCta } from "@/lib/content"
 // Show once the trigger section's top has risen past this fraction of the
 // viewport (i.e. the section has entered); stay shown for everything below it.
 const TRIGGER_RATIO = 0.85
+// …but hide again once the Final CTA section enters, so the band doesn't double
+// up over the real call to action.
+const HIDE_RATIO = 0.9
 
 export function StickyCta() {
   const [visible, setVisible] = useState(false)
   const reduce = useReducedMotion()
 
   useEffect(() => {
-    const target = document.getElementById(stickyCta.showFrom)
-    if (!target) return
     let raf = 0
-    const update = () =>
-      setVisible(
-        target.getBoundingClientRect().top < window.innerHeight * TRIGGER_RATIO,
-      )
+    const update = () => {
+      const trigger = document.getElementById(stickyCta.showFrom)
+      const hideEl = document.getElementById(stickyCta.hideAt)
+      const vh = window.innerHeight
+      const entered = trigger
+        ? trigger.getBoundingClientRect().top < vh * TRIGGER_RATIO
+        : false
+      const finalInView = hideEl
+        ? hideEl.getBoundingClientRect().top < vh * HIDE_RATIO
+        : false
+      setVisible(entered && !finalInView)
+    }
     const onScroll = () => {
       cancelAnimationFrame(raf)
       raf = requestAnimationFrame(update)

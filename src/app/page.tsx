@@ -1,4 +1,5 @@
 import { Header } from "@/components/header/Header"
+import { Footer } from "@/components/footer/Footer"
 import {
   Hero,
   VideoShowcase,
@@ -6,6 +7,7 @@ import {
   GettingStarted,
   SuperApp,
   TrustCompliance,
+  FinalCta,
   StickyCta,
 } from "@/components/sections"
 
@@ -21,7 +23,9 @@ export default function HomePage() {
         <GettingStarted />
         <SuperApp />
         <TrustCompliance />
+        <FinalCta />
       </main>
+      <Footer />
       <StickyCta />
     </>
   )

@@ -73,6 +73,8 @@
   --color-surface-olive: var(--brevy-olive); /* olive/500 — hero gradient top, nav bg */
   /* Figma dark blocks (banner, video) are emerald/500, not the darkest stop */
   --color-surface-inverse: var(--brevy-green-deep);
+  /* Final-CTA card — emerald/500 (same dark green as the banner/video) */
+  --color-surface-cta: var(--brevy-green-deep);
   --color-surface-active: var(--brevy-olive-50); /* compare: highlighted row */
   /* super-app per-card phone-column tints (Figma 24995:1035) */
   --color-surface-violet: var(--brevy-violet-200);
@@ -291,6 +293,7 @@
   --color-surface-soft: var(--color-surface-soft);
   --color-surface-olive: var(--color-surface-olive);
   --color-surface-inverse: var(--color-surface-inverse);
+  --color-surface-cta: var(--color-surface-cta);
   --color-surface-active: var(--color-surface-active);
   --color-surface-violet: var(--color-surface-violet);
   --color-surface-amber: var(--color-surface-amber);
