@@ -148,6 +148,14 @@
   --leading-body: 1.6;
   --leading-snug: 1.45;
 
+  /* Serif heading line-heights — Figma type scale (H1 = 72/60 = 1.2,
+     H2 = 48/36 = 1.333, all section H2s uniform). display/h3 levels have no
+     Figma serif-heading usage, so they're set scale-consistent, not assumed. */
+  --leading-h1: 1.2;
+  --leading-h2: 1.333;
+  --leading-h3: 1.3;
+  --leading-hd: 1.1;
+
   /* Hedvig serif headings use neutral tracking (Figma: 0) */
   --tracking-display: 0em;
   --tracking-label: 0.08em;
@@ -540,7 +548,8 @@ body {
   font-family: var(--font-serif);
   font-weight: 400;
   letter-spacing: var(--tracking-display);
-  line-height: var(--leading-display);
+  /* No line-height here: being unlayered it would override the per-level
+     leading utilities on headings. Leading is set per heading level instead. */
 }
 
 *:focus-visible {

@@ -9,12 +9,13 @@ type HeadingProps = {
   children: ReactNode
 }
 
-// Visual size (level) is decoupled from semantic tag (as).
+// Visual size (level) is decoupled from semantic tag (as). Leading is set per
+// level from the Figma type scale (tokens) — font-display no longer dictates it.
 const levelMap = {
-  display: "text-display",
-  h1: "text-h1",
-  h2: "text-h2 leading-tight",
-  h3: "text-h3 leading-tight",
+  display: "text-display leading-[var(--leading-hd)]",
+  h1: "text-h1 leading-[var(--leading-h1)]",
+  h2: "text-h2 leading-[var(--leading-h2)]",
+  h3: "text-h3 leading-[var(--leading-h3)]",
 } as const
 
 const toneMap = {

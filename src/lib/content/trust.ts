@@ -10,7 +10,7 @@ export const trust = {
   title: ["Secure by design.", "Compliant by default."],
   // Order = left-of-shield ×2, then right-of-shield ×2 (Figma label x-order).
   items: [
-    { icon: "evv", label: "Texas HHSC EVV ready Aug 1" },
+    { icon: "evv", label: "Texas HHSC EVV", subLabel: "Coming Aug 1, 2026" },
     { icon: "twoFactor", label: "Secure two-factor sign-in" },
     { icon: "data", label: "Your data stays private" },
     { icon: "brevy", label: "Built & backed by Brevy" },

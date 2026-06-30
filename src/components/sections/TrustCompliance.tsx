@@ -120,10 +120,9 @@ export function TrustCompliance() {
               <div
                 key={item.label}
                 style={{ left: ITEM_X[i] }}
-                className="absolute top-[71.7%] z-20 -translate-x-1/2 whitespace-nowrap"
+                className="absolute top-[71.7%] z-20 -translate-x-1/2 whitespace-nowrap text-center"
               >
-                <motion.span
-                  className="block text-body font-medium text-foreground"
+                <motion.div
                   initial={reduce ? false : { opacity: 0, y: t.rise }}
                   animate={show ? { opacity: 1, y: 0 } : { opacity: 0, y: t.rise }}
                   transition={{
@@ -132,8 +131,15 @@ export function TrustCompliance() {
                     ease: EASE.out,
                   }}
                 >
-                  {item.label}
-                </motion.span>
+                  <span className="block text-body font-medium text-foreground">
+                    {item.label}
+                  </span>
+                  {"subLabel" in item && item.subLabel && (
+                    <span className="mt-0.5 block text-xs font-medium text-foreground-muted">
+                      {item.subLabel}
+                    </span>
+                  )}
+                </motion.div>
               </div>
             )
           })}
@@ -165,6 +171,11 @@ export function TrustCompliance() {
                   <span className="-mt-12 text-center text-small font-medium text-foreground">
                     {item.label}
                   </span>
+                  {"subLabel" in item && item.subLabel && (
+                    <span className="text-center text-xs font-medium text-foreground-muted">
+                      {item.subLabel}
+                    </span>
+                  )}
                 </div>
               ))}
             </div>
