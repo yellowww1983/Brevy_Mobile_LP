@@ -7,7 +7,7 @@ export const nav = {
     platforms: ["iOS", "Android"],
   },
   links: [
-    { label: "How it works", href: anchors.video },
+    { label: "How it works", href: anchors.howItWorks },
     { label: "Features", href: anchors.features },
     { label: "Compliance", href: anchors.compliance },
   ],

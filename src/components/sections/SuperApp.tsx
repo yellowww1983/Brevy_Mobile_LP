@@ -98,7 +98,12 @@ export function SuperApp() {
   }, [n])
 
   return (
-    <Section id="super-app" rhythm="content" surface="default">
+    <Section
+      id="super-app"
+      rhythm="content"
+      surface="default"
+      className="scroll-mt-24"
+    >
       <Stack size="xl" align="center">
         <Reveal blur>
           <SectionHeader

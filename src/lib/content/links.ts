@@ -12,10 +12,9 @@ export const links = {
   terms: "#", // terms of service (URL TBD)
 } as const
 
-/** In-page scroll targets. Section ids must match these. */
+/** In-page scroll targets — nav links. Values must match a section id. */
 export const anchors = {
-  video: "#video",
-  features: "#features",
-  compliance: "#compliance",
-  gettingStarted: "#getting-started",
+  howItWorks: "#getting-started", // "How it works" → Getting Started
+  features: "#super-app", // "Features" → Everything in one app
+  compliance: "#trust", // "Compliance" → Trusted & compliant
 } as const

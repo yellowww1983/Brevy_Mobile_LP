@@ -9,7 +9,12 @@ const mocks = [PasskeyMock, TodosMock, PatientMock]
 
 export function GettingStarted() {
   return (
-    <Section surface="gradient-warm" rhythm="content">
+    <Section
+      id="getting-started"
+      surface="gradient-warm"
+      rhythm="content"
+      className="scroll-mt-24"
+    >
       <Stack size="xl" align="center">
         <Reveal blur>
           <SectionHeader

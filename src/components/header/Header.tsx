@@ -84,7 +84,7 @@ export function Header() {
         >
           <Logo />
 
-          <div className="flex items-center">
+          <div className="flex items-center md:gap-2">
             <div className="hidden items-center md:flex">
               {nav.links.map((link) => (
                 <Action

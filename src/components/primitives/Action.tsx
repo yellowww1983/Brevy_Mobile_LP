@@ -40,7 +40,7 @@ const variantMap = {
   secondary:
     "rounded-full bg-background text-foreground border border-border hover:border-border-soft",
   // Nav text links: zinc-800, soft 10px corner, regular weight, subtle hover.
-  ghost: "rounded-md font-normal text-foreground hover:bg-background",
+  ghost: "rounded-md font-normal text-foreground hover:bg-surface-hover",
   inverse:
     "rounded-full bg-background text-foreground hover:bg-surface-soft shadow-sm",
   // Hero download buttons: white field, emerald outline/text, leaf corners.

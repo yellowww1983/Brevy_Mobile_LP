@@ -48,7 +48,12 @@ export function TrustCompliance() {
   const show = reduce || inView
 
   return (
-    <Section id="trust" surface="gradient" rhythm="content">
+    <Section
+      id="trust"
+      surface="gradient"
+      rhythm="content"
+      className="scroll-mt-24"
+    >
       <Stack size="xl" align="center">
         <Reveal blur>
           <SectionHeader
