@@ -32,7 +32,7 @@ export function FinalCta() {
             <Action variant="join" size="lg" href={finalCta.cta.href}>
               {finalCta.cta.label}
             </Action>
-            <p className="max-w-[28rem] text-center text-xs leading-4 text-foreground-inverse opacity-50">
+            <p className="max-w-[28rem] text-center text-micro leading-4 text-foreground-inverse opacity-50">
               {finalCta.reassurance.line1}
               <br />
               {finalCta.reassurance.line2}{" "}

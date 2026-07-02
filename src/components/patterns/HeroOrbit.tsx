@@ -146,7 +146,7 @@ export function HeroOrbit() {
                   >
                     <TagIcon className="size-4 text-foreground-muted" />
                   </span>
-                  <span className="whitespace-nowrap text-xs font-medium text-foreground">
+                  <span className="whitespace-nowrap text-micro font-medium text-foreground">
                     {tag.label}
                   </span>
                 </div>

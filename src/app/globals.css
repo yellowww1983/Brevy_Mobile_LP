@@ -86,6 +86,12 @@
   --color-surface-indigo: var(--brevy-indigo-200); /* setup */
   --color-surface-purple: var(--brevy-purple-200); /* EVV */
 
+  /* Modal scrim — frosted white glass over the page (download QR dialog). The
+     translucency + backdrop blur is the "glass"; the panel's own shadow lifts
+     it off the wash. */
+  --color-overlay: color-mix(in srgb, var(--brevy-white) 60%, transparent);
+  --overlay-blur: 8px;
+
   /* ---- Semantic text ---- */
   /* Figma uses zinc/800 as primary text (nav, subheads, section headings) */
   --color-foreground: var(--brevy-zinc-800);
@@ -146,6 +152,7 @@
   --text-body: 1rem;
   --text-small: 0.875rem;
   --text-label: 0.8125rem;
+  --text-micro: 0.75rem; /* Figma text/xs — 12px fine-print, sub-labels */
 
   --leading-display: 1.05;
   --leading-tight: 1.15;
@@ -304,6 +311,7 @@
   --color-surface-mint: var(--color-surface-mint);
   --color-surface-indigo: var(--color-surface-indigo);
   --color-surface-purple: var(--color-surface-purple);
+  --color-overlay: var(--color-overlay);
 
   --color-foreground: var(--color-foreground);
   --color-foreground-muted: var(--color-foreground-muted);
@@ -353,6 +361,8 @@
   --text-body: var(--text-body);
   --text-small: var(--text-small);
   --text-label: var(--text-label);
+  --text-micro: var(--text-micro);
+  --text-micro--line-height: 1rem; /* Figma leading-4 (16px) — pairs with text/xs, matches Tailwind text-xs */
 
   --font-sans: var(--font-sans);
   --font-serif: var(--font-serif);

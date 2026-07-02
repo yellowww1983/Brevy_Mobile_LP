@@ -136,7 +136,7 @@ export function TrustCompliance() {
                     {item.label}
                   </span>
                   {"subLabel" in item && item.subLabel && (
-                    <span className="mt-0.5 block text-xs font-medium text-foreground-muted">
+                    <span className="mt-0.5 block text-micro font-medium text-foreground-muted">
                       {item.subLabel}
                     </span>
                   )}
@@ -173,7 +173,7 @@ export function TrustCompliance() {
                     {item.label}
                   </span>
                   {"subLabel" in item && item.subLabel && (
-                    <span className="text-center text-xs font-medium text-foreground-muted">
+                    <span className="text-center text-micro font-medium text-foreground-muted">
                       {item.subLabel}
                     </span>
                   )}
