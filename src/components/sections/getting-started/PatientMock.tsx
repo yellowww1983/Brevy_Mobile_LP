@@ -63,6 +63,8 @@ export function PatientMock() {
       <div className="flex flex-col gap-3">
         <div className="flex items-center justify-between gap-2">
           <div className="flex min-w-0 items-center gap-1.5">
+            {/* text-lg: app-UI mock, intentionally outside the landing type
+                scale (this reproduces an in-app screen, not landing typography). */}
             <p className="truncate text-lg font-semibold text-foreground">
               {name}
             </p>

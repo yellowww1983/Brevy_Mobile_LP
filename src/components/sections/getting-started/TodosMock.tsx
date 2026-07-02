@@ -46,6 +46,8 @@ export function TodosMock() {
       ref={ref}
       className="min-h-[16.875rem] w-full overflow-hidden rounded-field border border-border-field bg-background shadow-sm"
     >
+      {/* text-lg: app-UI mock, intentionally outside the landing type scale
+          (this reproduces an in-app screen, not landing typography). */}
       <p className="px-4 pt-2 text-lg font-semibold leading-7 text-foreground">
         {title}
       </p>
