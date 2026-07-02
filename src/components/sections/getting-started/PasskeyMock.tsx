@@ -3,15 +3,11 @@
 import { useEffect, useRef, useState } from "react"
 import { motion, useInView, useReducedMotion } from "framer-motion"
 import { Icon } from "@/lib/icons"
+import { readCssVar } from "@/lib/utils"
 import { onboarding } from "@/lib/content"
 
 const Eye = Icon.eye
 const ScanFace = Icon.scanFace
-
-const readMs = (token: string, fallback: number) =>
-  parseInt(
-    getComputedStyle(document.documentElement).getPropertyValue(token),
-  ) || fallback
 
 /**
  * Step 1 mock. On scroll-in, a password types itself in dot-by-dot; once full,
@@ -31,7 +27,7 @@ export function PasskeyMock() {
       return
     }
     if (!inView) return
-    const speed = readMs("--step1-type-speed", 120)
+    const speed = readCssVar("--step1-type-speed", 120)
     let n = 0
     const id = setInterval(() => {
       n += 1

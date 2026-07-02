@@ -4,12 +4,8 @@ import { type CSSProperties, useEffect, useState } from "react"
 import Image from "next/image"
 import { AnimatePresence, motion, useReducedMotion } from "framer-motion"
 import { EASE } from "@/lib/motion"
+import { readCssVar } from "@/lib/utils"
 import { superApp } from "@/lib/content"
-
-const readMs = (token: string, fallback: number) =>
-  parseInt(
-    getComputedStyle(document.documentElement).getPropertyValue(token),
-  ) || fallback
 
 // Rectangle of the empty white screen inside /phone-in-hand.png, as design
 // tokens — the UI overlay is clipped to exactly this box.
@@ -28,10 +24,14 @@ const screenBox: CSSProperties = {
  */
 function ScreenView({ index }: { index: number }) {
   const step = superApp.steps[index]
-  if (step.screen) {
+  // Widened to string so the faux-screen fallback below stays reachable even
+  // when every step ships a real export (literal types would otherwise narrow
+  // `step` to `never` here).
+  const screen: string = step.screen
+  if (screen) {
     return (
       <Image
-        src={step.screen}
+        src={screen}
         alt={step.title}
         fill
         sizes="20rem"
@@ -73,7 +73,7 @@ export function PhoneStory({
 }) {
   const reduce = useReducedMotion()
   const [dropMs, setDropMs] = useState(600)
-  useEffect(() => setDropMs(readMs("--story-drop-ms", 600)), [])
+  useEffect(() => setDropMs(readCssVar("--story-drop-ms", 600)), [])
 
   const overlay = (
     <div className="absolute overflow-hidden" style={screenBox}>

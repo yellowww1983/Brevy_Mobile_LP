@@ -28,3 +28,17 @@ const twMerge = extendTailwindMerge({
 export function cn(...inputs: ClassValue[]) {
   return twMerge(clsx(inputs))
 }
+
+/**
+ * Read a numeric CSS custom property off :root, falling back when it's unset
+ * or unparseable. `parseFloat` handles both integer (ms) and float tokens.
+ * Client-only — call inside an effect, never at import time (touches
+ * `document`).
+ */
+export function readCssVar(token: string, fallback: number): number {
+  return (
+    parseFloat(
+      getComputedStyle(document.documentElement).getPropertyValue(token),
+    ) || fallback
+  )
+}

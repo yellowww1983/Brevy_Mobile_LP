@@ -3,16 +3,12 @@
 import { useEffect, useRef, useState } from "react"
 import { useInView, useReducedMotion } from "framer-motion"
 import { Icon } from "@/lib/icons"
+import { readCssVar } from "@/lib/utils"
 import { onboarding } from "@/lib/content"
 
 const Building = Icon.building
 const Calendar = Icon.calendar
 const CircleCheck = Icon.circleCheck
-
-const readMs = (token: string, fallback: number) =>
-  parseInt(
-    getComputedStyle(document.documentElement).getPropertyValue(token),
-  ) || fallback
 
 /**
  * Step 3 mock. On scroll-in the this-week bar fills from `hours` to
@@ -42,7 +38,7 @@ export function PatientMock() {
       return
     }
     if (!inView) return
-    const ms = readMs("--step3-fill-ms", 1800)
+    const ms = readCssVar("--step3-fill-ms", 1800)
     let raf = 0
     let start = 0
     const tick = (t: number) => {

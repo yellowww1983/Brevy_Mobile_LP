@@ -2,18 +2,13 @@
 
 import { useEffect, useRef, useState } from "react"
 import { motion, useInView, useReducedMotion } from "framer-motion"
-import { cn } from "@/lib/utils"
+import { cn, readCssVar } from "@/lib/utils"
 import { Icon } from "@/lib/icons"
 import { onboarding } from "@/lib/content"
 import { EASE } from "@/lib/motion"
 
 const Check = Icon.check
 const ChevronRight = Icon.chevronRight
-
-const readMs = (token: string, fallback: number) =>
-  parseInt(
-    getComputedStyle(document.documentElement).getPropertyValue(token),
-  ) || fallback
 
 /**
  * Step 2 mock. The first item starts done; on scroll-in the remaining items
@@ -38,7 +33,7 @@ export function TodosMock() {
       return
     }
     if (!inView) return
-    const stagger = readMs("--step2-check-stagger", 600)
+    const stagger = readCssVar("--step2-check-stagger", 600)
     const timers = pending.map((idx, k) =>
       setTimeout(() => setChecked((c) => [...c, idx]), stagger * (k + 1)),
     )

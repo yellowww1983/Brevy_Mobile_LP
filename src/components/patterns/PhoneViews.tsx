@@ -2,7 +2,7 @@
 
 import { useEffect, useState } from "react"
 import { AnimatePresence, motion, useReducedMotion } from "framer-motion"
-import { cn } from "@/lib/utils"
+import { cn, readCssVar } from "@/lib/utils"
 import { Media } from "@/components/primitives"
 import { EASE } from "@/lib/motion"
 
@@ -50,12 +50,7 @@ export function PhoneViews({
 
   useEffect(() => {
     if (controlled || reduce || views.length < 2) return
-    const ms =
-      parseInt(
-        getComputedStyle(document.documentElement).getPropertyValue(
-          "--phone-cycle-ms",
-        ),
-      ) || 3200
+    const ms = readCssVar("--phone-cycle-ms", 3200)
     const id = setInterval(() => setI((p) => (p + 1) % views.length), ms)
     return () => clearInterval(id)
   }, [controlled, reduce, views.length])

@@ -3,6 +3,7 @@
 import { useEffect, useState } from "react"
 import { AnimatePresence, motion, useReducedMotion } from "framer-motion"
 import { EASE } from "@/lib/motion"
+import { readCssVar } from "@/lib/utils"
 import { hero } from "@/lib/content"
 
 /**
@@ -19,12 +20,8 @@ export function HeroBadge() {
 
   useEffect(() => {
     if (reduce || variants.length < 2) return
-    const read = (name: string, fallback: number) =>
-      parseInt(
-        getComputedStyle(document.documentElement).getPropertyValue(name),
-      ) || fallback
-    const ms = read("--badge-cycle-ms", 2500)
-    const delay = read("--badge-cycle-delay-ms", 0)
+    const ms = readCssVar("--badge-cycle-ms", 2500)
+    const delay = readCssVar("--badge-cycle-delay-ms", 0)
 
     let interval: ReturnType<typeof setInterval>
     const start = setTimeout(() => {

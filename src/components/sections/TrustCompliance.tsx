@@ -6,6 +6,7 @@ import { motion, useInView, useReducedMotion } from "framer-motion"
 import { Section, Stack, Reveal } from "@/components/primitives"
 import { SectionHeader } from "@/components/patterns"
 import { EASE } from "@/lib/motion"
+import { readCssVar } from "@/lib/utils"
 import { trust, assets } from "@/lib/content"
 
 // Item x-centres as a % of the 1200-wide stage (Figma 25073), mirrored for even
@@ -17,11 +18,6 @@ const SLIDE_FROM = ["157%", "76%", "-76%", "-157%"] as const
 // Stagger ring: the inner pair (2fa/data) leads, the outer pair (evv/brevy)
 // follows — nearer circles emerge from behind the shield first.
 const RING = [1, 0, 0, 1] as const
-
-const readNum = (token: string, fallback: number) =>
-  parseFloat(
-    getComputedStyle(document.documentElement).getPropertyValue(token),
-  ) || fallback
 
 /**
  * Section #7 "Trust & compliance". A glass shield sits centre stage; on scroll
@@ -38,10 +34,10 @@ export function TrustCompliance() {
   const [t, setT] = useState({ slide: 700, stagger: 120, label: 400, rise: 8 })
   useEffect(() => {
     setT({
-      slide: readNum("--trust-slide-ms", 700),
-      stagger: readNum("--trust-stagger-ms", 120),
-      label: readNum("--trust-label-ms", 400),
-      rise: readNum("--trust-label-rise", 8),
+      slide: readCssVar("--trust-slide-ms", 700),
+      stagger: readCssVar("--trust-stagger-ms", 120),
+      label: readCssVar("--trust-label-ms", 400),
+      rise: readCssVar("--trust-label-rise", 8),
     })
   }, [])
 

@@ -15,12 +15,8 @@ import {
   CareIntro,
 } from "@/components/patterns"
 import { EASE } from "@/lib/motion"
+import { readCssVar } from "@/lib/utils"
 import { care, assets } from "@/lib/content"
-
-const readMs = (token: string, fallback: number) =>
-  parseInt(
-    getComputedStyle(document.documentElement).getPropertyValue(token),
-  ) || fallback
 
 /**
  * Care-coordination section. Plays a one-time intro ("Brevy turns chaos into
@@ -42,8 +38,8 @@ export function CareComparison() {
   const inView = useInView(cardRef, { once: true, margin: "-10%" })
 
   useEffect(() => {
-    setCycleMs(readMs("--feature-cycle-ms", 4500))
-    setIntroMs(readMs("--intro-duration", 4000))
+    setCycleMs(readCssVar("--feature-cycle-ms", 4500))
+    setIntroMs(readCssVar("--intro-duration", 4000))
   }, [])
 
   // Reduced motion: no intro, straight to the comparison.

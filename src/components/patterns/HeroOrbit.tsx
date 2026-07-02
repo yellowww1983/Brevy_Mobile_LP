@@ -4,7 +4,7 @@ import { type CSSProperties, useEffect, useRef, useState } from "react"
 import { motion, useInView, useReducedMotion } from "framer-motion"
 import { Icon } from "@/lib/icons"
 import { EASE, ORBIT } from "@/lib/motion"
-import { cn } from "@/lib/utils"
+import { cn, readCssVar } from "@/lib/utils"
 import { hero } from "@/lib/content"
 
 /**
@@ -34,11 +34,6 @@ const TONE = {
   stub: "bg-tag-stub",
 } as const
 
-const readNum = (token: string, fallback: number) =>
-  parseFloat(
-    getComputedStyle(document.documentElement).getPropertyValue(token),
-  ) || fallback
-
 export function HeroOrbit() {
   const ref = useRef<HTMLDivElement>(null)
   const inView = useInView(ref, { once: true, margin: "-15%" })
@@ -58,12 +53,12 @@ export function HeroOrbit() {
   })
   useEffect(() => {
     setT({
-      drop: readNum("--hero-tags-drop", ORBIT.drop),
-      dropMs: readNum("--hero-tags-drop-ms", ORBIT.dropDuration * 1000),
-      tagStagger: readNum("--hero-tags-stagger-ms", ORBIT.tagStagger * 1000),
-      tagDelay: readNum("--hero-tags-delay-ms", ORBIT.tagDelay * 1000),
-      ringDrawMs: readNum("--rings-draw-ms", ORBIT.ringDraw * 1000),
-      ringStaggerMs: readNum("--rings-stagger-ms", ORBIT.ringStagger * 1000),
+      drop: readCssVar("--hero-tags-drop", ORBIT.drop),
+      dropMs: readCssVar("--hero-tags-drop-ms", ORBIT.dropDuration * 1000),
+      tagStagger: readCssVar("--hero-tags-stagger-ms", ORBIT.tagStagger * 1000),
+      tagDelay: readCssVar("--hero-tags-delay-ms", ORBIT.tagDelay * 1000),
+      ringDrawMs: readCssVar("--rings-draw-ms", ORBIT.ringDraw * 1000),
+      ringStaggerMs: readCssVar("--rings-stagger-ms", ORBIT.ringStagger * 1000),
     })
   }, [])
 
