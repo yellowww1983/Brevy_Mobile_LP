@@ -1,10 +1,10 @@
 "use client"
 
-import { type CSSProperties, useEffect, useState } from "react"
+import { type CSSProperties } from "react"
 import Image from "next/image"
 import { AnimatePresence, motion, useReducedMotion } from "framer-motion"
 import { EASE } from "@/lib/motion"
-import { readCssVar } from "@/lib/utils"
+import { useCssVar } from "@/lib/hooks"
 import { superApp } from "@/lib/content"
 
 // Rectangle of the empty white screen inside /phone-in-hand.png, as design
@@ -72,8 +72,7 @@ export function PhoneStory({
   mode?: "contain" | "bleed"
 }) {
   const reduce = useReducedMotion()
-  const [dropMs, setDropMs] = useState(600)
-  useEffect(() => setDropMs(readCssVar("--story-drop-ms", 600)), [])
+  const dropMs = useCssVar("--story-drop-ms", 600)
 
   const overlay = (
     <div className="absolute overflow-hidden" style={screenBox}>

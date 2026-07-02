@@ -15,7 +15,7 @@ import {
   CareIntro,
 } from "@/components/patterns"
 import { EASE } from "@/lib/motion"
-import { readCssVar } from "@/lib/utils"
+import { useCssVar } from "@/lib/hooks"
 import { care, assets } from "@/lib/content"
 
 /**
@@ -28,19 +28,14 @@ import { care, assets } from "@/lib/content"
  */
 export function CareComparison() {
   const [active, setActive] = useState(0)
-  const [cycleMs, setCycleMs] = useState(4500)
-  const [introMs, setIntroMs] = useState(4000)
   const [phase, setPhase] = useState<"intro" | "content">("intro")
   const reduce = useReducedMotion()
   const count = care.after.items.length
+  const cycleMs = useCssVar("--feature-cycle-ms", 4500)
+  const introMs = useCssVar("--intro-duration", 4000)
 
   const cardRef = useRef<HTMLDivElement>(null)
   const inView = useInView(cardRef, { once: true, margin: "-10%" })
-
-  useEffect(() => {
-    setCycleMs(readCssVar("--feature-cycle-ms", 4500))
-    setIntroMs(readCssVar("--intro-duration", 4000))
-  }, [])
 
   // Reduced motion: no intro, straight to the comparison.
   useEffect(() => {

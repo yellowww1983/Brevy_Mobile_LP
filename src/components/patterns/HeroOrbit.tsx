@@ -1,10 +1,11 @@
 "use client"
 
-import { type CSSProperties, useEffect, useRef, useState } from "react"
+import { type CSSProperties, useRef } from "react"
 import { motion, useInView, useReducedMotion } from "framer-motion"
 import { Icon } from "@/lib/icons"
 import { EASE, ORBIT } from "@/lib/motion"
-import { cn, readCssVar } from "@/lib/utils"
+import { cn } from "@/lib/utils"
+import { useCssVar } from "@/lib/hooks"
 import { hero } from "@/lib/content"
 
 /**
@@ -40,27 +41,12 @@ export function HeroOrbit() {
   const reduce = useReducedMotion()
 
   // Live timing from the design tokens (fall back to the motion defaults).
-  const [t, setT] = useState<Record<
-    "drop" | "dropMs" | "tagStagger" | "tagDelay" | "ringDrawMs" | "ringStaggerMs",
-    number
-  >>({
-    drop: ORBIT.drop,
-    dropMs: ORBIT.dropDuration * 1000,
-    tagStagger: ORBIT.tagStagger * 1000,
-    tagDelay: ORBIT.tagDelay * 1000,
-    ringDrawMs: ORBIT.ringDraw * 1000,
-    ringStaggerMs: ORBIT.ringStagger * 1000,
-  })
-  useEffect(() => {
-    setT({
-      drop: readCssVar("--hero-tags-drop", ORBIT.drop),
-      dropMs: readCssVar("--hero-tags-drop-ms", ORBIT.dropDuration * 1000),
-      tagStagger: readCssVar("--hero-tags-stagger-ms", ORBIT.tagStagger * 1000),
-      tagDelay: readCssVar("--hero-tags-delay-ms", ORBIT.tagDelay * 1000),
-      ringDrawMs: readCssVar("--rings-draw-ms", ORBIT.ringDraw * 1000),
-      ringStaggerMs: readCssVar("--rings-stagger-ms", ORBIT.ringStagger * 1000),
-    })
-  }, [])
+  const drop = useCssVar("--hero-tags-drop", ORBIT.drop)
+  const dropMs = useCssVar("--hero-tags-drop-ms", ORBIT.dropDuration * 1000)
+  const tagStagger = useCssVar("--hero-tags-stagger-ms", ORBIT.tagStagger * 1000)
+  const tagDelay = useCssVar("--hero-tags-delay-ms", ORBIT.tagDelay * 1000)
+  const ringDrawMs = useCssVar("--rings-draw-ms", ORBIT.ringDraw * 1000)
+  const ringStaggerMs = useCssVar("--rings-stagger-ms", ORBIT.ringStagger * 1000)
 
   const show = reduce || inView
 
@@ -93,8 +79,8 @@ export function HeroOrbit() {
                   initial={reduce ? false : { pathLength: 0 }}
                   animate={{ pathLength: show ? 1 : 0 }}
                   transition={{
-                    duration: t.ringDrawMs / 1000,
-                    delay: (order * t.ringStaggerMs) / 1000,
+                    duration: ringDrawMs / 1000,
+                    delay: (order * ringStaggerMs) / 1000,
                     ease: EASE.out,
                   }}
                 />
@@ -110,7 +96,7 @@ export function HeroOrbit() {
         const TagIcon = Icon[tag.icon]
         // Float begins the instant this tag finishes dropping, so the hand-off
         // from drop (framer) to float (CSS) is seamless.
-        const landMs = t.tagDelay + i * t.tagStagger + t.dropMs
+        const landMs = tagDelay + i * tagStagger + dropMs
         return (
           <div
             key={tag.label}
@@ -119,11 +105,11 @@ export function HeroOrbit() {
           >
             {/* phase 1 — drop in from above */}
             <motion.div
-              initial={reduce ? false : { opacity: 0, y: -t.drop }}
-              animate={show ? { opacity: 1, y: 0 } : { opacity: 0, y: -t.drop }}
+              initial={reduce ? false : { opacity: 0, y: -drop }}
+              animate={show ? { opacity: 1, y: 0 } : { opacity: 0, y: -drop }}
               transition={{
-                duration: t.dropMs / 1000,
-                delay: (t.tagDelay + i * t.tagStagger) / 1000,
+                duration: dropMs / 1000,
+                delay: (tagDelay + i * tagStagger) / 1000,
                 ease: EASE.outBack,
               }}
             >

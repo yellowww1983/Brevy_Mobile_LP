@@ -1,12 +1,12 @@
 "use client"
 
-import { useEffect, useRef, useState } from "react"
+import { useRef } from "react"
 import Image from "next/image"
 import { motion, useInView, useReducedMotion } from "framer-motion"
 import { Section, Stack, Reveal } from "@/components/primitives"
 import { SectionHeader } from "@/components/patterns"
 import { EASE } from "@/lib/motion"
-import { readCssVar } from "@/lib/utils"
+import { useCssVar } from "@/lib/hooks"
 import { trust, assets } from "@/lib/content"
 
 // Item x-centres as a % of the 1200-wide stage (Figma 25073), mirrored for even
@@ -31,15 +31,10 @@ export function TrustCompliance() {
   const stageRef = useRef<HTMLDivElement>(null)
   const inView = useInView(stageRef, { once: true, margin: "-15%" })
 
-  const [t, setT] = useState({ slide: 700, stagger: 120, label: 400, rise: 8 })
-  useEffect(() => {
-    setT({
-      slide: readCssVar("--trust-slide-ms", 700),
-      stagger: readCssVar("--trust-stagger-ms", 120),
-      label: readCssVar("--trust-label-ms", 400),
-      rise: readCssVar("--trust-label-rise", 8),
-    })
-  }, [])
+  const slide = useCssVar("--trust-slide-ms", 700)
+  const stagger = useCssVar("--trust-stagger-ms", 120)
+  const label = useCssVar("--trust-label-ms", 400)
+  const rise = useCssVar("--trust-label-rise", 8)
 
   const show = reduce || inView
 
@@ -85,8 +80,8 @@ export function TrustCompliance() {
                 initial={reduce ? false : { x: SLIDE_FROM[i] }}
                 animate={{ x: show ? "0%" : SLIDE_FROM[i] }}
                 transition={{
-                  duration: reduce ? 0 : t.slide / 1000,
-                  delay: reduce ? 0 : (RING[i] * t.stagger) / 1000,
+                  duration: reduce ? 0 : slide / 1000,
+                  delay: reduce ? 0 : (RING[i] * stagger) / 1000,
                   ease: EASE.outBack,
                 }}
               >
@@ -116,7 +111,7 @@ export function TrustCompliance() {
 
           {/* labels — fade up once each badge has landed */}
           {trust.items.map((item, i) => {
-            const landMs = RING[i] * t.stagger + t.slide
+            const landMs = RING[i] * stagger + slide
             return (
               <div
                 key={item.label}
@@ -124,10 +119,10 @@ export function TrustCompliance() {
                 className="absolute top-[71.7%] z-20 -translate-x-1/2 whitespace-nowrap text-center"
               >
                 <motion.div
-                  initial={reduce ? false : { opacity: 0, y: t.rise }}
-                  animate={show ? { opacity: 1, y: 0 } : { opacity: 0, y: t.rise }}
+                  initial={reduce ? false : { opacity: 0, y: rise }}
+                  animate={show ? { opacity: 1, y: 0 } : { opacity: 0, y: rise }}
                   transition={{
-                    duration: reduce ? 0 : t.label / 1000,
+                    duration: reduce ? 0 : label / 1000,
                     delay: reduce ? 0 : landMs / 1000 + 0.05,
                     ease: EASE.out,
                   }}
