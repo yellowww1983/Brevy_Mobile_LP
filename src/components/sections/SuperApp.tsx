@@ -2,7 +2,7 @@
 
 import { useEffect, useRef, useState } from "react"
 import { useReducedMotion } from "framer-motion"
-import { Section, Stack, Reveal, Badge } from "@/components/primitives"
+import { Section, Stack, Reveal, Badge, Text } from "@/components/primitives"
 import { SectionHeader, PhoneStory } from "@/components/patterns"
 import { cn } from "@/lib/utils"
 import { superApp } from "@/lib/content"
@@ -27,12 +27,12 @@ function StepCopy({ step }: { step: Step }) {
           {step.badge}
         </Badge>
       )}
-      <h3 className="text-editorial font-semibold text-foreground">
+      <Text as="h3" variant="cardHeading">
         {step.title}
-      </h3>
-      <p className="max-w-[30rem] text-editorial leading-7 text-foreground-muted">
+      </Text>
+      <Text variant="editorial" tone="muted" className="max-w-[30rem]">
         {step.body}
-      </p>
+      </Text>
     </div>
   )
 }

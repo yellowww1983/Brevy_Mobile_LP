@@ -59,9 +59,9 @@ export function CompareColumn({
         >
           {label}
         </Text>
-        <h3 className="text-editorial font-semibold leading-snug text-foreground-muted">
+        <Text as="h3" variant="cardHeading" tone="muted">
           {heading}
-        </h3>
+        </Text>
       </div>
 
       <ul className="flex flex-col">

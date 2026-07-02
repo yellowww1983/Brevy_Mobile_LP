@@ -2,7 +2,7 @@ import type { ReactNode } from "react"
 import { cn } from "@/lib/utils"
 
 type TextProps = {
-  variant?: "editorial" | "body" | "small" | "caption"
+  variant?: "editorial" | "cardHeading" | "body" | "small" | "caption"
   tone?:
     | "default"
     | "muted"
@@ -10,13 +10,17 @@ type TextProps = {
     | "accent"
     | "inverse"
     | "inverse-muted"
-  as?: "p" | "span" | "div" | "blockquote" | "figcaption" | "li"
+  as?: "p" | "span" | "div" | "h3" | "h4" | "blockquote" | "figcaption" | "li"
   className?: string // max-width / position only, never font/size/leading
   children: ReactNode
 }
 
 const variantMap = {
   editorial: "text-editorial leading-snug",
+  // Sans card/step title: editorial size, semibold. Pair with `as="h3"`. The
+  // non-serif sub-heading used by StepCard / CompareColumn / SuperApp —
+  // distinct from the serif `Heading` primitive.
+  cardHeading: "text-editorial font-semibold leading-snug",
   body: "text-body leading-body",
   small: "text-small leading-body",
   caption: "text-label tracking-label uppercase font-medium",

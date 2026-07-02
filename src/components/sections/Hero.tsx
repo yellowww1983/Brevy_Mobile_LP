@@ -174,6 +174,10 @@ export function Hero() {
             className="relative z-10 mx-auto mt-14 flex max-w-2xl flex-col items-center gap-8 text-center md:-mt-[7rem]"
           >
             <Reveal blur inView={bottomInView} delay={S * 1}>
+              {/* Raw <p> on purpose: a one-off gradient display tagline at h3
+                  size but SANS + clipped gradient fill — fits neither Text
+                  (body ≤ editorial) nor the serif Heading primitive, so a
+                  single-use variant would pollute a primitive for one usage. */}
               <p className="text-gradient-brevy max-w-2xl text-balance text-h3 font-semibold leading-tight">
                 {hero.tagline}
               </p>

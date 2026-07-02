@@ -34,9 +34,9 @@ export function StepCard({
         <Text as="span" variant="small" tone="accent" className="uppercase">
           {step}
         </Text>
-        <h3 className="text-editorial font-semibold leading-snug text-foreground-muted">
+        <Text as="h3" variant="cardHeading" tone="muted">
           {title}
-        </h3>
+        </Text>
         <Text variant="body" tone="muted">
           {description}
         </Text>
