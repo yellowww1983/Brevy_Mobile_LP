@@ -17,3 +17,18 @@ export const stickyCta = {
    *  real call to action, so the band shouldn't double up over it. */
   hideAt: "final-cta",
 } as const
+
+/**
+ * "Download app" modal: a scan-to-install dialog with one QR per store. Each
+ * QR is generated live from the store link below, so swapping the URL in
+ * links.ts re-renders the code — no image to regenerate.
+ */
+export const downloadModal = {
+  title: "Scan QR Code",
+  subtitle: "Point your phone camera at a code to install Brevy.",
+  close: "Close",
+  stores: [
+    { icon: "ios", label: "iOS · App Store", href: links.iosApp },
+    { icon: "android", label: "Android · Google Play", href: links.androidApp },
+  ] satisfies { icon: IconName; label: string; href: string }[],
+} as const

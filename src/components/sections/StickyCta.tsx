@@ -1,9 +1,11 @@
 "use client"
 
-import { useEffect, useState } from "react"
+import { useState } from "react"
 import { motion, useReducedMotion } from "framer-motion"
 import { cn } from "@/lib/utils"
+import { useScrollEffect } from "@/lib/hooks"
 import { Action } from "@/components/primitives"
+import { DownloadModal } from "@/components/patterns"
 import { Icon } from "@/lib/icons"
 import { EASE } from "@/lib/motion"
 import { stickyCta } from "@/lib/content"
@@ -23,39 +25,26 @@ const HIDE_RATIO = 0.9
 
 export function StickyCta() {
   const [visible, setVisible] = useState(false)
+  const [downloadOpen, setDownloadOpen] = useState(false)
   const reduce = useReducedMotion()
 
-  useEffect(() => {
-    let raf = 0
-    const update = () => {
-      const trigger = document.getElementById(stickyCta.showFrom)
-      const hideEl = document.getElementById(stickyCta.hideAt)
-      const vh = window.innerHeight
-      const entered = trigger
-        ? trigger.getBoundingClientRect().top < vh * TRIGGER_RATIO
-        : false
-      const finalInView = hideEl
-        ? hideEl.getBoundingClientRect().top < vh * HIDE_RATIO
-        : false
-      setVisible(entered && !finalInView)
-    }
-    const onScroll = () => {
-      cancelAnimationFrame(raf)
-      raf = requestAnimationFrame(update)
-    }
-    update()
-    window.addEventListener("scroll", onScroll, { passive: true })
-    window.addEventListener("resize", onScroll, { passive: true })
-    return () => {
-      window.removeEventListener("scroll", onScroll)
-      window.removeEventListener("resize", onScroll)
-      cancelAnimationFrame(raf)
-    }
-  }, [])
+  useScrollEffect(() => {
+    const trigger = document.getElementById(stickyCta.showFrom)
+    const hideEl = document.getElementById(stickyCta.hideAt)
+    const vh = window.innerHeight
+    const entered = trigger
+      ? trigger.getBoundingClientRect().top < vh * TRIGGER_RATIO
+      : false
+    const finalInView = hideEl
+      ? hideEl.getBoundingClientRect().top < vh * HIDE_RATIO
+      : false
+    setVisible(entered && !finalInView)
+  })
 
   return (
-    // Static wrapper: no transform here, or it would isolate the pill's
-    // backdrop-filter (the glass would compute but render nothing).
+    <>
+    {/* Static wrapper: no transform here, or it would isolate the pill's
+        backdrop-filter (the glass would compute but render nothing). */}
     <div className="pointer-events-none fixed inset-x-0 bottom-0 z-40 flex justify-center px-4 pb-5">
       <motion.div
         aria-hidden={!visible}
@@ -71,7 +60,11 @@ export function StickyCta() {
         }
         transition={{ duration: 0.4, ease: EASE.out }}
       >
-        <Action variant="store" size="lg" href={stickyCta.primary.href}>
+        <Action
+          variant="store"
+          size="lg"
+          onClick={() => setDownloadOpen(true)}
+        >
           {stickyCta.primary.label}
         </Action>
         {stickyCta.stores.map((store) => {
@@ -89,5 +82,7 @@ export function StickyCta() {
         })}
       </motion.div>
     </div>
+    <DownloadModal open={downloadOpen} onOpenChange={setDownloadOpen} />
+    </>
   )
 }
