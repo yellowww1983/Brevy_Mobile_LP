@@ -1,10 +1,11 @@
 "use client"
 
-import { useEffect, useRef, useState } from "react"
+import { useRef, useState } from "react"
 import { useReducedMotion } from "framer-motion"
 import { Section, Stack, Reveal, Badge, Text } from "@/components/primitives"
 import { SectionHeader, PhoneStory } from "@/components/patterns"
 import { cn } from "@/lib/utils"
+import { useScrollEffect } from "@/lib/hooks"
 import { superApp } from "@/lib/content"
 
 type Step = (typeof superApp.steps)[number]
@@ -73,28 +74,13 @@ export function SuperApp() {
   // Card 0 shows the instant the section enters (progress clamps to 0 before the
   // pin starts), and there's no dead zone — distance === the scrub range.
   const driverRef = useRef<HTMLDivElement>(null)
-  useEffect(() => {
+  useScrollEffect(() => {
     const el = driverRef.current
     if (!el) return
-    let raf = 0
-    const update = () => {
-      const rect = el.getBoundingClientRect()
-      const distance = rect.height - window.innerHeight
-      const p = distance > 0 ? Math.min(1, Math.max(0, -rect.top / distance)) : 0
-      setActive(Math.min(n - 1, Math.floor(p * n)))
-    }
-    const onScroll = () => {
-      cancelAnimationFrame(raf)
-      raf = requestAnimationFrame(update)
-    }
-    update()
-    window.addEventListener("scroll", onScroll, { passive: true })
-    window.addEventListener("resize", onScroll, { passive: true })
-    return () => {
-      window.removeEventListener("scroll", onScroll)
-      window.removeEventListener("resize", onScroll)
-      cancelAnimationFrame(raf)
-    }
+    const rect = el.getBoundingClientRect()
+    const distance = rect.height - window.innerHeight
+    const p = distance > 0 ? Math.min(1, Math.max(0, -rect.top / distance)) : 0
+    setActive(Math.min(n - 1, Math.floor(p * n)))
   }, [n])
 
   return (
