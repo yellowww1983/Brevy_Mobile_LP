@@ -23,7 +23,7 @@ export const onboarding = {
       step: "Step 3",
       title: "Start caring",
       description:
-        "See your patients, your hours, and your pay in one place. When Texas EVV goes live August 1, you clock in right here too.",
+        "See your patients, your hours, and your pay in one place. Starting August 1, clock in and out from here, too.",
     },
   ],
   // Mockup content rendered in each step's tray.
