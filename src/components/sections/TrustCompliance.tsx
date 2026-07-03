@@ -5,9 +5,30 @@ import Image from "next/image"
 import { motion, useInView, useReducedMotion } from "framer-motion"
 import { Section, Stack, Reveal } from "@/components/primitives"
 import { SectionHeader } from "@/components/patterns"
+import { cn } from "@/lib/utils"
 import { EASE } from "@/lib/motion"
 import { useCssVar } from "@/lib/hooks"
 import { trust, assets } from "@/lib/content"
+
+// Crisp badge circle (Figma 25072-1043): 1px olive border, white→olive-200
+// gradient face, soft drop shadow. Drawn as a DOM element so the edge stays
+// sharp at any size/DPR — the icon SVG sits centred inside it.
+const badgeFace =
+  "grid place-items-center rounded-full border border-badge-border bg-gradient-to-b from-background to-surface-soft shadow-badge"
+
+function BadgeIcon({ src }: { src: string }) {
+  return (
+    <Image
+      src={src}
+      alt=""
+      aria-hidden
+      width={128}
+      height={128}
+      unoptimized
+      className="w-1/2"
+    />
+  )
+}
 
 // Item x-centres as a % of the 1200-wide stage (Figma 25073), mirrored for even
 // left/right spacing — outer pair at ±42.9%, inner pair at ±20.8% of centre.
@@ -74,9 +95,10 @@ export function TrustCompliance() {
             <div
               key={item.icon}
               style={{ left: ITEM_X[i] }}
-              className="absolute top-[47.8%] z-[1] w-[27.3%] -translate-x-1/2 -translate-y-[33.8%]"
+              className="absolute top-[47.8%] z-[1] aspect-square w-[27.3%] -translate-x-1/2 -translate-y-[33.8%]"
             >
               <motion.div
+                className="relative size-full"
                 initial={reduce ? false : { x: SLIDE_FROM[i] }}
                 animate={{ x: show ? "0%" : SLIDE_FROM[i] }}
                 transition={{
@@ -85,15 +107,16 @@ export function TrustCompliance() {
                   ease: EASE.outBack,
                 }}
               >
-                <Image
-                  src={assets.trust[item.icon]}
-                  alt=""
-                  aria-hidden
-                  width={328}
-                  height={328}
-                  unoptimized
-                  className="w-full"
-                />
+                {/* circle sits where the source SVG's circle did: 50% / 33.8%,
+                    39% of the box (= the 128px Figma badge on the 328 stage) */}
+                <span
+                  className={cn(
+                    badgeFace,
+                    "absolute left-1/2 top-[33.8%] aspect-square w-[39%] -translate-x-1/2 -translate-y-1/2",
+                  )}
+                >
+                  <BadgeIcon src={assets.trust[item.icon]} />
+                </span>
               </motion.div>
             </div>
           ))}
@@ -152,19 +175,16 @@ export function TrustCompliance() {
               sizes="16rem"
               className="h-auto w-[64%] max-w-[15rem]"
             />
-            <div className="grid w-full max-w-[22rem] grid-cols-2 gap-x-6">
+            <div className="grid w-full max-w-[22rem] grid-cols-2 gap-x-6 gap-y-8">
               {trust.items.map((item) => (
-                <div key={item.icon} className="flex flex-col items-center">
-                  <Image
-                    src={assets.trust[item.icon]}
-                    alt=""
-                    aria-hidden
-                    width={328}
-                    height={328}
-                    unoptimized
-                    className="h-auto w-[9rem]"
-                  />
-                  <span className="-mt-12 text-center text-small font-medium text-foreground">
+                <div
+                  key={item.icon}
+                  className="flex flex-col items-center gap-3"
+                >
+                  <span className={cn(badgeFace, "size-28")}>
+                    <BadgeIcon src={assets.trust[item.icon]} />
+                  </span>
+                  <span className="text-center text-small font-medium text-foreground">
                     {item.label}
                   </span>
                   {"subLabel" in item && item.subLabel && (

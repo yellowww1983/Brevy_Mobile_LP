@@ -40,12 +40,13 @@ export const assets = {
   // baked in); the four item badges are SVGs (light circle + line icon + soft
   // shadow, all inside a 328 viewBox, circle centred at 50%/33.8%).
   trust: {
-    // ?v cache-buster: these SVGs keep the same filename, so bump the version
-    // whenever their contents change or browsers/CDN serve the stale copy.
+    // The badge circle is drawn in code (crisp DOM element, Figma 25072-1043);
+    // these are the icon glyphs only (circle + shadow stripped from the source
+    // SVGs), rendered inside that circle.
     shield: "/secure@4x.png",
-    evv: "/evv.svg?v=3",
-    twoFactor: "/2fa.svg?v=3",
-    data: "/data.svg?v=3",
-    brevy: "/brevy.svg?v=3",
+    evv: "/evv-icon.svg",
+    twoFactor: "/2fa-icon.svg",
+    data: "/data-icon.svg",
+    brevy: "/brevy-icon.svg",
   },
 } as const
