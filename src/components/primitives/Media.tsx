@@ -9,6 +9,15 @@ type MediaProps = {
   height?: number // required for aspect="natural"
   rounded?: "none" | "md" | "lg"
   priority?: boolean
+  /**
+   * Loading hint for non-priority images. "eager" fetches on mount without the
+   * priority treatment (no preload link, no high fetch-priority) — used to warm
+   * the carousel's off-screen views so a crossfade never flickers, while keeping
+   * only the true LCP image at `priority`.
+   */
+  loading?: "eager" | "lazy"
+  /** Fetch priority hint — set "high" on the LCP image so it wins the race. */
+  fetchPriority?: "high" | "low" | "auto"
   sizes?: string
   className?: string // position / max-width only
 }
@@ -44,6 +53,8 @@ export function Media({
   height,
   rounded = "lg",
   priority = false,
+  loading,
+  fetchPriority,
   sizes = "100vw",
   className,
 }: MediaProps) {
@@ -71,6 +82,8 @@ export function Media({
         width={width}
         height={height}
         priority={priority}
+        loading={priority ? undefined : loading}
+        fetchPriority={fetchPriority}
         sizes={sizes}
         className={cn("h-auto w-full", roundedMap[rounded], className)}
       />
@@ -106,6 +119,8 @@ export function Media({
         alt={alt}
         fill
         priority={priority}
+        loading={priority ? undefined : loading}
+        fetchPriority={fetchPriority}
         sizes={sizes}
         className="object-cover"
       />

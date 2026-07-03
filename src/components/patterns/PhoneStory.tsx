@@ -104,12 +104,13 @@ export function PhoneStory({
     return (
       <div className="pointer-events-none absolute inset-x-0 bottom-0">
         <div className="relative mx-auto aspect-[420/595] w-[var(--story-phone-w)]">
+          {/* No priority: SuperApp is below the fold, so its phone-in-hand
+              shouldn't preload and compete with the hero LCP image. */}
           <Image
             src="/phone-in-hand.png"
             alt=""
             aria-hidden
             fill
-            priority
             sizes="32rem"
             className="story-fade object-contain"
           />

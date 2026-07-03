@@ -105,7 +105,12 @@ export function PhoneViews({
             aspect="natural"
             width={width}
             height={height}
-            priority
+            // Only the very first view of a `priority` carousel (the hero LCP)
+            // gets `priority` + fetchPriority=high, so exactly one image is
+            // preloaded and wins the bandwidth race. Later views (and every
+            // Care view, which passes no `priority`) load without a preload.
+            priority={Boolean(priority) && active === 0}
+            fetchPriority={priority && active === 0 ? "high" : undefined}
             sizes={sizes}
             rounded="none"
             className="w-full"
@@ -113,7 +118,12 @@ export function PhoneViews({
         </motion.div>
       </AnimatePresence>
 
-      {/* Preload every view up front so the first crossfade never flickers. */}
+      {/* Warm every view so a crossfade never flickers — kept as the hidden
+          double-render, but `loading="lazy"` so next/image does NOT emit a
+          preload link for them (only the LCP image above is preloaded: 12
+          competing preloads → 1). They still load early — they're in the
+          viewport, and the hero's 4.8s start-hold gives them ample time to
+          decode before the first crossfade (verified: 0 flicker on 4G). */}
       <div
         aria-hidden
         className="pointer-events-none absolute size-0 overflow-hidden opacity-0"
@@ -126,7 +136,7 @@ export function PhoneViews({
             aspect="natural"
             width={width}
             height={height}
-            priority
+            loading="lazy"
             sizes={sizes}
             rounded="none"
           />
