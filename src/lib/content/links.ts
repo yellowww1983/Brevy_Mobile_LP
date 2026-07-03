@@ -6,8 +6,8 @@ export const links = {
   enroll: "#", // external enrollment funnel (URL TBD)
   talk: "#", // "talk to us about joining" contact funnel (URL TBD)
   download: "#", // generic "download the app" smart link (URL TBD)
-  iosApp: "#", // App Store (URL TBD)
-  androidApp: "#", // Google Play (URL TBD)
+  iosApp: "https://apps.apple.com/us/app/brevy-care/id6775679941", // App Store
+  androidApp: "https://play.google.com/store/apps/details?id=com.brevy.caregiverapp", // Google Play
   privacy: "#", // privacy policy (URL TBD)
   terms: "#", // terms of service (URL TBD)
 } as const
