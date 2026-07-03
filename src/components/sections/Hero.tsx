@@ -25,8 +25,7 @@ import {
   PhoneViews,
 } from "@/components/patterns"
 import { ENTRANCE } from "@/lib/motion"
-import { useWebmAlpha } from "@/lib/hooks"
-import { cn } from "@/lib/utils"
+import { useWebmAlpha, useMinWidth } from "@/lib/hooks"
 import { hero, assets } from "@/lib/content"
 
 // Scroll tuning tokens (live-tweakable):
@@ -51,6 +50,10 @@ export function Hero() {
   const stageRef = useRef<HTMLDivElement>(null)
   const reduce = useReducedMotion()
   const webmAlpha = useWebmAlpha()
+  // Only mount the clover webm on desktop (≥ md) — on mobile the <video> would
+  // download 639 KiB even while CSS-hidden, starving the 4G LCP image.
+  const isDesktop = useMinWidth(768)
+  const showCloverVideo = isDesktop && webmAlpha
   const { scrollYProgress } = useScroll({
     target: stageRef,
     offset: ["start start", "end start"],
@@ -135,18 +138,19 @@ export function Hero() {
               className="pointer-events-none absolute left-1/2 z-[45] -translate-x-1/2"
             >
               <Reveal blur inView={bottomInView} delay={0}>
-                {/* Animated glass webm (alpha) — desktop, and only on engines
-                    that render webm's alpha channel. Safari (desktop + iOS)
-                    paints webm alpha as a black box, so it — and SSR, before
-                    detection — falls back to the still PNG below. */}
-                {webmAlpha && (
+                {/* Animated glass webm (alpha) — mounted only on desktop AND
+                    only on engines that render webm's alpha channel. On mobile
+                    (and Safari, which paints webm alpha as a black box, and the
+                    pre-detection SSR paint) the video isn't mounted at all, so
+                    it never downloads — the still PNG is shown instead. */}
+                {showCloverVideo ? (
                   <video
                     autoPlay
                     muted
                     loop
                     playsInline
                     aria-hidden
-                    className="hidden size-[var(--size-hero-clover)] object-contain md:block"
+                    className="size-[var(--size-hero-clover)] object-contain"
                   >
                     <source
                       src={assets.glassClover}
@@ -157,20 +161,16 @@ export function Hero() {
                       type='video/webm; codecs="vp8"'
                     />
                   </video>
+                ) : (
+                  <Image
+                    src={assets.glassCloverPng}
+                    alt=""
+                    aria-hidden
+                    width={448}
+                    height={448}
+                    className="size-[var(--size-hero-clover)] object-contain"
+                  />
                 )}
-                {/* Static transparent PNG — always on mobile, and on desktop
-                    whenever the webm can't show its alpha (Safari / pre-mount). */}
-                <Image
-                  src={assets.glassCloverPng}
-                  alt=""
-                  aria-hidden
-                  width={448}
-                  height={448}
-                  className={cn(
-                    "size-[var(--size-hero-clover)] object-contain",
-                    webmAlpha && "md:hidden",
-                  )}
-                />
               </Reveal>
             </div>
           )}

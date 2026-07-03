@@ -7,7 +7,7 @@ import { Section, Stack, Reveal } from "@/components/primitives"
 import { SectionHeader } from "@/components/patterns"
 import { cn } from "@/lib/utils"
 import { EASE } from "@/lib/motion"
-import { useCssVar } from "@/lib/hooks"
+import { useCssVar, useMinWidth } from "@/lib/hooks"
 import { trust, assets } from "@/lib/content"
 
 // Crisp badge circle (Figma 25072-1043): 1px olive border, white→olive-200
@@ -66,6 +66,9 @@ export function TrustCompliance() {
   const stagger = useCssVar("--trust-stagger-ms", 120)
   const label = useCssVar("--trust-label-ms", 400)
   const rise = useCssVar("--trust-label-rise", 8)
+  // Only mount the desktop shield (w=1200, ~278 KiB) on ≥ lg — its `priority`
+  // otherwise downloads it on mobile even though the desktop stage is CSS-hidden.
+  const isLg = useMinWidth(1024)
 
   const show = reduce || inView
 
@@ -131,7 +134,9 @@ export function TrustCompliance() {
             </div>
           ))}
 
-          {/* shield (centre) — above the badges so they emerge from behind it */}
+          {/* shield (centre) — above the badges so they emerge from behind it.
+              Mounted only on ≥ lg so its priority download never hits mobile. */}
+          {isLg && (
           <Image
             src={assets.trust.shield}
             alt="Brevy security shield"
@@ -141,6 +146,7 @@ export function TrustCompliance() {
             sizes="40rem"
             className="absolute left-1/2 top-1/2 z-10 w-[52%] -translate-x-1/2 -translate-y-[44%]"
           />
+          )}
 
           {/* labels — fade up once each badge has landed */}
           {trust.items.map((item, i) => {

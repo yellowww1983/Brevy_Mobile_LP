@@ -65,3 +65,22 @@ export function useWebmAlpha(): boolean {
   }, [])
   return supported
 }
+
+/**
+ * True when the viewport is at least `px` wide. Returns `false` on the server
+ * and first render (mobile-first), then matches after mount. Used to *not mount*
+ * heavy desktop-only media on phones — CSS `hidden`/`md:block` keeps the element
+ * in the DOM, so a `<video autoPlay>` or `priority` image still downloads on
+ * mobile; conditional rendering skips the download entirely.
+ */
+export function useMinWidth(px: number): boolean {
+  const [matches, setMatches] = useState(false)
+  useEffect(() => {
+    const mq = window.matchMedia(`(min-width: ${px}px)`)
+    const update = () => setMatches(mq.matches)
+    update()
+    mq.addEventListener("change", update)
+    return () => mq.removeEventListener("change", update)
+  }, [px])
+  return matches
+}
