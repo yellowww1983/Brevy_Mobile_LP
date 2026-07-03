@@ -1,6 +1,7 @@
 "use client"
 
 import { useEffect, useRef, useState } from "react"
+import Image from "next/image"
 import { motion, useInView, useReducedMotion } from "framer-motion"
 import { Icon } from "@/lib/icons"
 import { readCssVar } from "@/lib/utils"
@@ -61,10 +62,19 @@ export function PasskeyMock() {
       </div>
 
       <div className="flex items-center gap-4 rounded-2xl border border-positive-edge bg-gradient-to-b from-positive-ring to-surface p-3">
-        <span
-          aria-hidden
-          className="size-20 shrink-0 rounded-2xl bg-background bg-[url('/onboarding/passkey-face.png')] bg-cover bg-center"
-        />
+        {/* next/image (q90 WebP/AVIF) instead of a raw-PNG CSS background — the
+            188 KiB source is served resized + re-encoded for an 80px avatar. */}
+        <span className="relative size-20 shrink-0 overflow-hidden rounded-2xl bg-background">
+          <Image
+            src="/onboarding/passkey-face.png"
+            alt=""
+            aria-hidden
+            fill
+            sizes="80px"
+            quality={90}
+            className="object-cover object-center"
+          />
+        </span>
         <span className="flex flex-col gap-1">
           <span className="text-label font-semibold uppercase leading-4 text-accent-deep">
             {calloutLabel}

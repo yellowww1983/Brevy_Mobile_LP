@@ -135,14 +135,15 @@ export function TrustCompliance() {
           ))}
 
           {/* shield (centre) — above the badges so they emerge from behind it.
-              Mounted only on ≥ lg so its priority download never hits mobile. */}
+              Mounted only on ≥ lg (never downloads on mobile). No `priority`:
+              it's below the fold, not the LCP, so it shouldn't compete for
+              bandwidth — it lazy-loads as the section scrolls in. */}
           {isLg && (
           <Image
             src={assets.trust.shield}
             alt="Brevy security shield"
             width={2104}
             height={2212}
-            priority
             sizes="40rem"
             className="absolute left-1/2 top-1/2 z-10 w-[52%] -translate-x-1/2 -translate-y-[44%]"
           />
