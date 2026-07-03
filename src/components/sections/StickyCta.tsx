@@ -48,6 +48,11 @@ export function StickyCta() {
     <div className="pointer-events-none fixed inset-x-0 bottom-0 z-40 flex justify-center px-4 pb-5">
       <motion.div
         aria-hidden={!visible}
+        // `inert` while hidden: opacity-0 doesn't remove the CTA button / store
+        // links from the tab order, so a keyboard/agent could focus into the
+        // invisible band. inert pulls the whole subtree out of tab order + the
+        // a11y tree in one shot. No visual effect.
+        inert={!visible}
         className={cn(
           "flex max-w-full items-center gap-2 rounded-2xl bg-surface/70 p-2 shadow-lg backdrop-blur-[var(--nav-glass-blur)]",
           visible ? "pointer-events-auto" : "pointer-events-none",
