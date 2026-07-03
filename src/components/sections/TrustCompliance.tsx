@@ -16,16 +16,26 @@ import { trust, assets } from "@/lib/content"
 const badgeFace =
   "grid place-items-center rounded-full border border-badge-border bg-gradient-to-b from-background to-surface-soft shadow-badge"
 
+// Figma 25072-1043: each glyph is 64px wide inside the 128px circle (= 50%),
+// with per-icon heights — pass the real intrinsic size so the aspect is kept.
+const ICON_DIM: Record<string, { w: number; h: number }> = {
+  "/evv-icon.svg": { w: 64, h: 39 },
+  "/2fa-icon.svg": { w: 64, h: 54 },
+  "/data-icon.svg": { w: 64, h: 59 },
+  "/brevy-icon.svg": { w: 64, h: 64 },
+}
+
 function BadgeIcon({ src }: { src: string }) {
+  const dim = ICON_DIM[src] ?? { w: 64, h: 64 }
   return (
     <Image
       src={src}
       alt=""
       aria-hidden
-      width={128}
-      height={128}
+      width={dim.w}
+      height={dim.h}
       unoptimized
-      className="w-1/2"
+      className="h-auto w-1/2"
     />
   )
 }
