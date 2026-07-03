@@ -107,23 +107,24 @@ export function Hero() {
           {/* [0] orbit — concentric rings + floating tags, behind the phone */}
           <HeroOrbit />
 
-          {/* [1] phone — outer: scroll parallax + horizontal shift;
-              inner Reveal: on-load blur entrance */}
+          {/* [1] phone — outer: scroll parallax + horizontal shift. No on-load
+              opacity reveal: this is the LCP element, and an opacity-0 entrance
+              delays LCP (the browser ignores opacity:0 elements). View 0 paints
+              solid immediately; the carousel's own crossfade animates from view
+              1 on (which also keeps the first frame flicker-free). */}
           <motion.div
             style={reduce ? undefined : { y: phoneY }}
             className="relative z-10 mx-auto w-[var(--size-hero-phone)] max-w-full translate-x-[var(--hero-phone-shift)]"
           >
-            <Reveal blurUp delay={IN.phone}>
-              <PhoneViews
-                views={assets.heroPhones}
-                alt="Brevy app on iPhone"
-                width={2232}
-                height={3348}
-                priority
-                sizes="(min-width: 768px) 46rem, 92vw"
-                className="w-full"
-              />
-            </Reveal>
+            <PhoneViews
+              views={assets.heroPhones}
+              alt="Brevy app on iPhone"
+              width={2232}
+              height={3348}
+              priority
+              sizes="(min-width: 768px) 46rem, 92vw"
+              className="w-full"
+            />
           </motion.div>
 
           {/* [3] clover badge — pinned to the phone's bottom casing edge.

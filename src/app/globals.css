@@ -273,6 +273,8 @@
   --badge-cycle-ms: 4000; /* hero chip variant swap interval (read in JS) */
   --badge-cycle-delay-ms: 2000; /* delay before the chip starts cycling */
   --phone-cycle-ms: 3200; /* hero phone view crossfade interval (read in JS) */
+  --phone-start-hold-ms: 4800; /* initial hold on view 0 before the first cycle,
+     so the LCP lands on the first frame (later cycles use --phone-cycle-ms) */
   --feature-cycle-ms: 4500; /* compare section: per-row auto-advance time */
   --intro-duration: 4000; /* compare section: intro line hold before content (read in JS) */
   --step1-type-speed: 120; /* getting-started: ms between password dots */

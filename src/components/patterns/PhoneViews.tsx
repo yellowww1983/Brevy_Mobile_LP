@@ -51,8 +51,21 @@ export function PhoneViews({
   useEffect(() => {
     if (controlled || reduce || views.length < 2) return
     const ms = readCssVar("--phone-cycle-ms", 3200)
-    const id = setInterval(() => setI((p) => (p + 1) % views.length), ms)
-    return () => clearInterval(id)
+    // Hold view 0 longer before the first advance. Each crossfade paints a new
+    // large image = a fresh LCP candidate, so an early first cycle pushes LCP
+    // past the point view 0 registered; holding view 0 past the LCP window
+    // keeps LCP on the first frame. Subsequent cycles run on --phone-cycle-ms.
+    const hold = readCssVar("--phone-start-hold-ms", ms)
+    let interval: ReturnType<typeof setInterval>
+    const advance = () => setI((p) => (p + 1) % views.length)
+    const first = setTimeout(() => {
+      advance()
+      interval = setInterval(advance, ms)
+    }, hold)
+    return () => {
+      clearTimeout(first)
+      clearInterval(interval)
+    }
   }, [controlled, reduce, views.length])
 
   // Reduced motion: show the active view, swap instantly (no crossfade).
