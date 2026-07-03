@@ -43,9 +43,9 @@ export const assets = {
     // ?v cache-buster: these SVGs keep the same filename, so bump the version
     // whenever their contents change or browsers/CDN serve the stale copy.
     shield: "/secure@4x.png",
-    evv: "/evv.svg?v=2",
-    twoFactor: "/2fa.svg?v=2",
-    data: "/data.svg?v=2",
-    brevy: "/brevy.svg?v=2",
+    evv: "/evv.svg?v=3",
+    twoFactor: "/2fa.svg?v=3",
+    data: "/data.svg?v=3",
+    brevy: "/brevy.svg?v=3",
   },
 } as const
