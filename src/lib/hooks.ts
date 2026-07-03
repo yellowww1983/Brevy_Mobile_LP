@@ -42,3 +42,26 @@ export function useScrollEffect(onScroll: () => void, deps: DependencyList = [])
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, deps)
 }
+
+/**
+ * True when the browser renders webm's alpha channel. Safari (desktop + iOS)
+ * plays webm but paints its transparency as solid black, so it must fall back
+ * to a static PNG. Returns `false` on the server and first render (→ PNG, never
+ * a black box), then `true` after mount on engines that support alpha. Detection
+ * finishes on mount — long before the below-the-fold clover scrolls into view —
+ * so capable browsers never flash the PNG. Extend the exclusion list if another
+ * engine turns up with the same limitation.
+ */
+export function useWebmAlpha(): boolean {
+  const [supported, setSupported] = useState(false)
+  useEffect(() => {
+    const ua = navigator.userAgent
+    const isSafari =
+      /safari/i.test(ua) &&
+      !/chrome|chromium|crios|android|edg|edgios|fxios|opr|opera|samsungbrowser/i.test(
+        ua,
+      )
+    setSupported(!isSafari)
+  }, [])
+  return supported
+}

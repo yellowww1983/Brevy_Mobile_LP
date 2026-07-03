@@ -25,6 +25,8 @@ import {
   PhoneViews,
 } from "@/components/patterns"
 import { ENTRANCE } from "@/lib/motion"
+import { useWebmAlpha } from "@/lib/hooks"
+import { cn } from "@/lib/utils"
 import { hero, assets } from "@/lib/content"
 
 // Scroll tuning tokens (live-tweakable):
@@ -48,6 +50,7 @@ const IN = {
 export function Hero() {
   const stageRef = useRef<HTMLDivElement>(null)
   const reduce = useReducedMotion()
+  const webmAlpha = useWebmAlpha()
   const { scrollYProgress } = useScroll({
     target: stageRef,
     offset: ["start start", "end start"],
@@ -132,33 +135,41 @@ export function Hero() {
               className="pointer-events-none absolute left-1/2 z-[45] -translate-x-1/2"
             >
               <Reveal blur inView={bottomInView} delay={0}>
-                {/* Desktop: animated glass webm (alpha). */}
-                <video
-                  autoPlay
-                  muted
-                  loop
-                  playsInline
-                  aria-hidden
-                  className="hidden size-[var(--size-hero-clover)] object-contain md:block"
-                >
-                  <source
-                    src={assets.glassClover}
-                    type='video/webm; codecs="vp9"'
-                  />
-                  <source
-                    src={assets.glassCloverVp8}
-                    type='video/webm; codecs="vp8"'
-                  />
-                </video>
-                {/* Mobile: static transparent PNG — iOS Safari renders webm
-                    alpha as a black box, so phones get the still frame. */}
+                {/* Animated glass webm (alpha) — desktop, and only on engines
+                    that render webm's alpha channel. Safari (desktop + iOS)
+                    paints webm alpha as a black box, so it — and SSR, before
+                    detection — falls back to the still PNG below. */}
+                {webmAlpha && (
+                  <video
+                    autoPlay
+                    muted
+                    loop
+                    playsInline
+                    aria-hidden
+                    className="hidden size-[var(--size-hero-clover)] object-contain md:block"
+                  >
+                    <source
+                      src={assets.glassClover}
+                      type='video/webm; codecs="vp9"'
+                    />
+                    <source
+                      src={assets.glassCloverVp8}
+                      type='video/webm; codecs="vp8"'
+                    />
+                  </video>
+                )}
+                {/* Static transparent PNG — always on mobile, and on desktop
+                    whenever the webm can't show its alpha (Safari / pre-mount). */}
                 <Image
                   src={assets.glassCloverPng}
                   alt=""
                   aria-hidden
                   width={448}
                   height={448}
-                  className="size-[var(--size-hero-clover)] object-contain md:hidden"
+                  className={cn(
+                    "size-[var(--size-hero-clover)] object-contain",
+                    webmAlpha && "md:hidden",
+                  )}
                 />
               </Reveal>
             </div>
