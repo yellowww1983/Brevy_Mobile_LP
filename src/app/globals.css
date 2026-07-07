@@ -276,7 +276,7 @@
   --phone-start-hold-ms: 4800; /* initial hold on view 0 before the first cycle,
      so the LCP lands on the first frame (later cycles use --phone-cycle-ms) */
   --feature-cycle-ms: 4500; /* compare section: per-row auto-advance time */
-  --intro-duration: 4000; /* compare section: intro line hold before content (read in JS) */
+  --intro-duration: 2000; /* compare section: intro line hold before content (read in JS) */
   --step1-type-speed: 120; /* getting-started: ms between password dots */
   --step2-check-stagger: 600; /* getting-started: ms between checklist items checking */
   --step3-fill-ms: 1800; /* getting-started: this-week bar fill + count-up duration */
