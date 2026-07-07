@@ -65,13 +65,22 @@ export function StickyCta() {
         }
         transition={{ duration: 0.4, ease: EASE.out }}
       >
-        <Action
-          variant="store"
-          size="lg"
-          onClick={() => setDownloadOpen(true)}
-        >
+        {/* Mobile: a QR code can't be scanned by the same phone that shows it,
+            so "Download app" is a plain label over the two store links (Figma
+            25165:1920), not the scan-to-install trigger. Desktop keeps the
+            button that opens the QR modal — scanning desktop → phone works. */}
+        <span className="inline-block w-[9.75rem] text-center text-body leading-6 text-accent-deep md:hidden">
           {stickyCta.primary.label}
-        </Action>
+        </span>
+        <div className="hidden md:contents">
+          <Action
+            variant="store"
+            size="lg"
+            onClick={() => setDownloadOpen(true)}
+          >
+            {stickyCta.primary.label}
+          </Action>
+        </div>
         {stickyCta.stores.map((store) => {
           const StoreIcon = Icon[store.icon]
           return (
