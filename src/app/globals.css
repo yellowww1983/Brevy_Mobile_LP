@@ -250,9 +250,11 @@
   --shadow-xl: 0 12px 24px -8px rgb(0 0 0 / 0.12), 0 24px 48px -12px rgb(0 0 0 / 0.12);
   /* Figma navbar: shadow/lg two layers, blur halved per the CSS export */
   --shadow-navbar: 0 10px 7.5px 0 rgb(0 0 0 / 0.1), 0 4px 3px 0 rgb(0 0 0 / 0.1);
-  /* Trust badge circle — Figma 25072-1043 (0 53 100 rgba(135,147,141,.8)). The
-     circle itself is a crisp DOM element; this is just its soft drop shadow. */
-  --shadow-badge: 0 53px 100px 0 rgb(135 147 141 / 0.8);
+  /* Trust badge circle — Figma 25072-1047. Soft drop shadow + a subtle top
+     inset that gives the face a faint pressed rim (the circle itself is a crisp
+     DOM element; this is just its shadow). */
+  --shadow-badge: inset 0 4px 4px 0 rgb(0 0 0 / 0.05),
+    0 53px 100px 0 rgb(135 147 141 / 0.8);
   /* Trust section entrance: badges slide out from behind the shield, then each
      label fades up once its circle lands (read in JS). */
   --trust-slide-ms: 700; /* circle slide-out duration */
@@ -506,14 +508,15 @@
   }
 
   /* Trust section: thin horizontal "signal" lines radiating from the shield to
-     both sides (Figma 25073). 17px pitch, 1px soft-olive line; a horizontal
-     mask fades them out toward the outer items (strong at the shield → clear at
-     the edge), symmetric left/right. */
+     both sides (Figma 25072-1047). 3 lines, 25px pitch, 1px soft-olive; a
+     horizontal mask fades them out toward the outer items (strong at the shield
+     → clear at the edge), symmetric left/right. The 51px band height (below)
+     holds exactly 3 lines (0 / 25 / 50). */
   .trust-lines {
     background-image: repeating-linear-gradient(
       to bottom,
       var(--brevy-olive-deep) 0 1px,
-      transparent 1px 17px
+      transparent 1px 25px
     );
   }
   .trust-lines-out-left {

@@ -99,9 +99,10 @@ export function TrustCompliance() {
           ref={stageRef}
           className="relative mx-auto hidden aspect-[1200/410] w-full max-w-[var(--container-max)] lg:block"
         >
-          {/* signal lines (behind everything) */}
-          <div className="trust-lines trust-lines-out-left pointer-events-none absolute left-0 top-[37.3%] z-0 h-[20.7%] w-[calc(50%-1px)]" />
-          <div className="trust-lines trust-lines-out-right pointer-events-none absolute right-0 top-[37.3%] z-0 h-[20.7%] w-[calc(50%-1px)]" />
+          {/* signal lines (behind everything) — a fixed 51px band centred on the
+              badge midline holds exactly 3 lines at 25px pitch (Figma 25072-1047) */}
+          <div className="trust-lines trust-lines-out-left pointer-events-none absolute left-0 top-[47.7%] z-0 h-[51px] w-[calc(50%-1px)] -translate-y-1/2" />
+          <div className="trust-lines trust-lines-out-right pointer-events-none absolute right-0 top-[47.7%] z-0 h-[51px] w-[calc(50%-1px)] -translate-y-1/2" />
 
           {/* trust badges — slide out from behind the shield along the lines */}
           {trust.items.map((item, i) => (
