@@ -12,7 +12,7 @@ export const superApp = {
   steps: [
     {
       title: "See your hours",
-      body: "Track your hours across every patient at a glance, with your remaining authorized time always in view. No more calling ops to check where you stand.",
+      body: "Track your hours across every patient at a glance, with your remaining authorized time always in view. No need to reach out to support with questions on your hours and visits.",
       screen: "/feature-hours@3x.png",
       tint: "violet", // violet/200
     },
