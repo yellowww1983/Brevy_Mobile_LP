@@ -28,8 +28,15 @@ export function FinalCta() {
             </Text>
           </Stack>
 
-          <Stack size="sm" align="center" className="text-center">
-            <Action variant="join" size="lg" href={finalCta.cta.href}>
+          {/* w-fit shrinks the column to its widest child — the reassurance
+              line — and the button stretches (w-full) to exactly that width. */}
+          <div className="flex w-fit flex-col items-stretch gap-4">
+            <Action
+              variant="join"
+              size="lg"
+              href={finalCta.cta.href}
+              className="w-full"
+            >
               {finalCta.cta.label}
             </Action>
             <p className="max-w-[28rem] text-center text-micro leading-4 text-foreground-inverse opacity-50">
@@ -44,7 +51,7 @@ export function FinalCta() {
                 {finalCta.reassurance.platforms[1]}
               </span>
             </p>
-          </Stack>
+          </div>
         </div>
       </Reveal>
     </Section>
