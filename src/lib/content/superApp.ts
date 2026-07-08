@@ -36,7 +36,7 @@ export const superApp = {
     },
     {
       title: "Set up the easy way",
-      body: "Finish enrollment right in the app, and watch your progress from your first call to your first authorized visit.",
+      body: "Finish enrollment right in the app, and track your progress from your first call to your first authorized visit.",
       screen: "/feature-setup@3x.png",
       tint: "indigo", // indigo/200
     },
