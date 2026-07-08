@@ -64,7 +64,9 @@ export function Header() {
           {nav.announcement.platforms.map((platform, i) => (
             <span key={platform}>
               <span className="text-foreground-inverse-muted">{platform}</span>
-              {i < nav.announcement.platforms.length - 1 ? ", " : ""}
+              {i < nav.announcement.platforms.length - 1
+                ? ` ${nav.announcement.conjunction} `
+                : ""}
             </span>
           ))}
         </p>
