@@ -3,8 +3,8 @@
  * values for real URLs without touching a single component.
  */
 export const links = {
-  enroll: "#", // external enrollment funnel (URL TBD)
-  talk: "#", // "talk to us about joining" contact funnel (URL TBD)
+  enroll: "https://brevy.com/funnel", // "Get started" — hero + nav funnel
+  talk: "https://brevy.com/funnel", // "Get started" — final-CTA funnel (same funnel)
   download: "#", // generic "download the app" smart link (URL TBD)
   iosApp: "https://apps.apple.com/us/app/brevy-care/id6775679941", // App Store
   androidApp: "https://play.google.com/store/apps/details?id=com.brevy.caregiverapp", // Google Play

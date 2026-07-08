@@ -11,7 +11,7 @@ export const finalCta = {
   title: ["Care for people.", "We'll handle the rest."],
   subhead:
     "Brevy caregivers get the app, steady hours, and a team that has their back. Want to see if it's right for you?",
-  cta: { label: "Talk to us about joining Brevy", href: links.talk },
+  cta: { label: "Get started", href: links.talk },
   // Reassurance: small print on two lines; the platform names render semibold.
   reassurance: {
     line1: "The Brevy app is free for Brevy caregivers",

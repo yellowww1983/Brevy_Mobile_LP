@@ -12,5 +12,5 @@ export const nav = {
     { label: "Features", href: anchors.features },
     { label: "Compliance", href: anchors.compliance },
   ],
-  cta: { label: "Talk to us", href: links.enroll },
+  cta: { label: "Get started", href: links.enroll },
 } as const
