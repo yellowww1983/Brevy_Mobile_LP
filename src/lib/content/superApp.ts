@@ -18,7 +18,7 @@ export const superApp = {
     },
     {
       title: "Know your pay before payday",
-      body: "See your estimated take-home, browse and download every pay stub, and manage direct deposit. The separate pay app is gone.",
+      body: "See your estimated take-home, browse and download every pay stub, and manage direct deposit. No need for a separate app to manage your pay.",
       screen: "/feature-pay@3x.png",
       tint: "amber", // yellow/200
     },
