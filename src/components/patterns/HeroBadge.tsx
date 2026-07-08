@@ -42,7 +42,7 @@ export function HeroBadge() {
   return (
     <motion.span
       layout
-      className="border-beam chip-glass inline-flex items-center gap-1 rounded-full px-2 py-1 text-small font-normal leading-4 text-accent-deep"
+      className="border-beam chip-glass inline-block max-w-[20rem] rounded-3xl px-3 py-1.5 text-center text-small font-normal leading-snug text-accent-deep sm:max-w-[40rem] sm:rounded-full sm:px-2 sm:py-1"
     >
       <AnimatePresence mode="popLayout" initial={false}>
         <motion.span
@@ -52,9 +52,10 @@ export function HeroBadge() {
           animate={{ opacity: 1, y: 0, filter: "blur(0px)" }}
           exit={reduce ? {} : { opacity: 0, y: -5, filter: "blur(4px)" }}
           transition={{ duration: 0.4, ease: EASE.out }}
-          className="inline-flex items-center gap-1 whitespace-nowrap"
+          className="inline text-balance"
         >
-          <span className="inline-flex h-4 items-center rounded-full bg-surface-olive px-1 text-accent-deep">
+          {/* date pill stays on one line; the callout flows and wraps after it */}
+          <span className="mr-1.5 inline-block whitespace-nowrap rounded-full bg-surface-olive px-1.5 align-middle text-accent-deep">
             {variant.pill}
           </span>
           {variant.text}

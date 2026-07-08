@@ -8,10 +8,13 @@ interface StoreButton {
 }
 
 export const hero = {
-  // Hero chip cycles through these variants (pill + text).
+  // Hero chip. A single EVV announcement: the date sits in the pill, the rest
+  // reads as the callout. (One variant → the chip renders static, no cycle.)
   badge: [
-    { pill: "5000+", text: "caregivers trusted us in Texas" },
-    { pill: "Aug 3, 2026", text: "Texas EVV clock-in and clock-out arrives" },
+    {
+      pill: "Coming August 3, 2026",
+      text: "Clock in and out directly in the Brevy app, no more HAeXchange+",
+    },
   ],
   title: "Your caregiver super app",
   subtitle:
