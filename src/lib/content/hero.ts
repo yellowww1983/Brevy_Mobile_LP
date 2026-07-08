@@ -11,7 +11,7 @@ export const hero = {
   // Hero chip cycles through these variants (pill + text).
   badge: [
     { pill: "5000+", text: "caregivers trusted us in Texas" },
-    { pill: "Aug 1, 2026", text: "Texas EVV clock-in and clock-out arrives" },
+    { pill: "Aug 3, 2026", text: "Texas EVV clock-in and clock-out arrives" },
   ],
   title: "Your caregiver super app",
   subtitle:

@@ -23,7 +23,7 @@ export const onboarding = {
       step: "Step 3",
       title: "Start caring",
       description:
-        "See your patients, your hours, and your pay in one place. Starting August 1, clock in and out from here, too.",
+        "See your patients, your hours, and your pay in one place. Starting August 3, clock in and out from here, too.",
     },
   ],
   // Mockup content rendered in each step's tray.

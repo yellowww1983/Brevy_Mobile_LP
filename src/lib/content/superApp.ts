@@ -45,7 +45,7 @@ export const superApp = {
       body: "Clock-in and clock-out with automatic GPS and time capture, fully compliant with Texas HHSC. It's the one piece that arrives after launch, and it lives in the same app you already use, so there's nothing new to learn.",
       screen: "/feature-evv@3x.png",
       tint: "purple", // purple/200
-      badge: "Coming Aug 1, 2026",
+      badge: "Coming Aug 3, 2026",
     },
   ],
 } as const
