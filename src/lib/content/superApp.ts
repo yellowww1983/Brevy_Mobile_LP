@@ -30,7 +30,7 @@ export const superApp = {
     },
     {
       title: "Trainings & resources",
-      body: "Reach your required trainings and guides without hunting for links across your inbox.",
+      body: "Access trainings and helpful guides without having to hunt for links in your inbox.",
       screen: "/feature-trainings@3x.png",
       tint: "mint", // emerald/100
     },
