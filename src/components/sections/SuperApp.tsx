@@ -1,11 +1,12 @@
 "use client"
 
-import { useRef, useState } from "react"
-import { useReducedMotion } from "framer-motion"
+import { useEffect, useRef, useState } from "react"
+import { useInView, useReducedMotion } from "framer-motion"
 import { Section, Stack, Reveal, Badge, Text } from "@/components/primitives"
 import { SectionHeader, PhoneStory } from "@/components/patterns"
 import { cn } from "@/lib/utils"
-import { useScrollEffect } from "@/lib/hooks"
+import { useCssVar } from "@/lib/hooks"
+import { Icon } from "@/lib/icons"
 import { superApp } from "@/lib/content"
 
 type Step = (typeof superApp.steps)[number]
@@ -19,6 +20,9 @@ const TINT: Record<string, string> = {
   indigo: "from-surface-indigo",
   purple: "from-surface-purple",
 }
+
+const ArrowLeftIcon = Icon.arrowLeft
+const ArrowRightIcon = Icon.arrow
 
 function StepCopy({ step }: { step: Step }) {
   return (
@@ -38,50 +42,71 @@ function StepCopy({ step }: { step: Step }) {
   )
 }
 
-/** Stacked card for mobile / reduced motion — no pin, no fall. */
-function StackedStep({ step, index }: { step: Step; index: number }) {
+/** Prev / next slider controls — Figma 24990: two 48px outlined circles. */
+function SliderNav({
+  onPrev,
+  onNext,
+  className,
+}: {
+  onPrev: () => void
+  onNext: () => void
+  className?: string
+}) {
+  const btn =
+    "grid size-12 place-items-center rounded-full border border-divider text-foreground-muted transition-colors hover:bg-surface-soft hover:text-foreground"
   return (
-    <div
-      className={cn(
-        "flex flex-col gap-6 overflow-hidden rounded-2xl border border-divider bg-gradient-to-b to-surface p-6",
-        TINT[step.tint],
-      )}
-    >
-      <div className="mx-auto w-full max-w-[15rem]">
-        <PhoneStory active={index} />
-      </div>
-      <StepCopy step={step} />
+    <div className={cn("flex gap-2", className)}>
+      <button
+        type="button"
+        aria-label={superApp.nav.prev}
+        onClick={onPrev}
+        className={btn}
+      >
+        <ArrowLeftIcon className="size-5" />
+      </button>
+      <button
+        type="button"
+        aria-label={superApp.nav.next}
+        onClick={onNext}
+        className={btn}
+      >
+        <ArrowRightIcon className="size-5" />
+      </button>
     </div>
   )
 }
 
 /**
- * Section #6 "The super app". Desktop: SafeStep-style scrollytelling — a
- * FIXED-height card is position:sticky (pinned) while an invisible driver gives
- * the scroll distance. Scroll progress picks the active step; the left copy and
- * the right phone screen crossfade in place (screen also falls in from above).
- * The hand is anchored to the card bottom and its wrist fades into the gradient.
- * Mobile and reduced motion fall back to a plain stacked list.
+ * Section #6 "The super app". A testimonial-style card slider: one {copy +
+ * phone screen} card at a time, switched by the ‹ › arrows and auto-advancing
+ * every --story-cycle-ms (looping). Any arrow click resets the countdown — the
+ * auto-advance effect is keyed to the active index, so a manual change restarts
+ * it (same reset-on-interaction semantics as CareComparison). Desktop keeps the
+ * Figma two-column card (copy left, phone-in-hand right, per-card tint); mobile
+ * stacks the phone over the copy. Reduced motion: no auto-advance and no
+ * transitions (the global reduced-motion rule zeroes them) — arrows still work.
  */
 export function SuperApp() {
   const [active, setActive] = useState(0)
   const reduce = useReducedMotion()
   const n = superApp.steps.length
+  const cycleMs = useCssVar("--story-cycle-ms", 4000)
 
-  // Pin scrubbing. The driver is tall; the card is sticky. activeIndex maps to
-  // EVEN segments of the driver's travel through the viewport, read straight off
-  // getBoundingClientRect (Lenis runs in native mode, so this is accurate).
-  // Card 0 shows the instant the section enters (progress clamps to 0 before the
-  // pin starts), and there's no dead zone — distance === the scrub range.
-  const driverRef = useRef<HTMLDivElement>(null)
-  useScrollEffect(() => {
-    const el = driverRef.current
-    if (!el) return
-    const rect = el.getBoundingClientRect()
-    const distance = rect.height - window.innerHeight
-    const p = distance > 0 ? Math.min(1, Math.max(0, -rect.top / distance)) : 0
-    setActive(Math.min(n - 1, Math.floor(p * n)))
-  }, [n])
+  const ref = useRef<HTMLDivElement>(null)
+  const inView = useInView(ref, { margin: "-20%" })
+
+  const go = (dir: number) => setActive((a) => (a + dir + n) % n)
+
+  // Auto-advance while the slider is in view. Keyed to `active`, so an arrow
+  // click (which changes `active`) tears down the pending timeout and starts a
+  // fresh one — the countdown resets on interaction with no extra bookkeeping.
+  useEffect(() => {
+    if (reduce || !inView) return
+    const id = setTimeout(() => setActive((a) => (a + 1) % n), cycleMs)
+    return () => clearTimeout(id)
+  }, [active, inView, reduce, n, cycleMs])
+
+  const step = superApp.steps[active]
 
   return (
     <Section
@@ -105,62 +130,64 @@ export function SuperApp() {
           />
         </Reveal>
 
-        {/* Desktop pinned scrollytelling — hidden under reduced motion. The
-            driver is tall (scroll distance); the card inside stays fixed. */}
-        {!reduce && (
-          <div
-            ref={driverRef}
-            className="relative hidden w-full lg:block"
-            style={{ height: `calc(${n} * var(--story-step-scroll) + 100svh)` }}
-          >
-            <div className="sticky top-[var(--story-pin-top)]">
-              <div className="mx-auto grid h-[var(--story-card-h)] w-full max-w-[75rem] grid-cols-2 overflow-hidden rounded-2xl border border-divider">
-                {/* LEFT — copy crossfades in place */}
-                <div className="relative bg-gradient-to-b from-surface to-background">
-                  {superApp.steps.map((step, i) => (
-                    <div
-                      key={step.title}
-                      aria-hidden={active !== i}
-                      className="absolute inset-0 flex flex-col justify-center px-12 transition-opacity duration-500"
-                      style={{ opacity: active === i ? 1 : 0 }}
-                    >
-                      <StepCopy step={step} />
-                    </div>
-                  ))}
+        <div ref={ref} className="w-full max-w-[75rem]">
+          {/* Desktop — Figma two-column card. Normal height (no pin, no tall
+              scroll driver): the arrows + timer drive the active card. */}
+          <div className="mx-auto hidden h-[var(--story-card-h)] grid-cols-2 overflow-hidden rounded-2xl border border-divider lg:grid">
+            {/* LEFT — copy crossfades in place; arrows pinned bottom-left */}
+            <div className="relative bg-gradient-to-b from-surface to-background">
+              {superApp.steps.map((s, i) => (
+                <div
+                  key={s.title}
+                  aria-hidden={active !== i}
+                  className="pointer-events-none absolute inset-0 flex flex-col justify-center px-12 transition-opacity duration-500"
+                  style={{ opacity: active === i ? 1 : 0 }}
+                >
+                  <StepCopy step={s} />
                 </div>
-                {/* RIGHT — pinned hand (bleeds to bottom, masked) + screen.
-                    The column tint crossfades per step (stacked gradient
-                    layers fading on the active index). */}
-                <div className="relative">
-                  {superApp.steps.map((step, i) => (
-                    <div
-                      key={step.title}
-                      aria-hidden
-                      className={cn(
-                        "absolute inset-0 bg-gradient-to-b to-surface transition-opacity duration-500",
-                        TINT[step.tint],
-                      )}
-                      style={{ opacity: active === i ? 1 : 0 }}
-                    />
-                  ))}
-                  <PhoneStory active={active} mode="bleed" />
-                </div>
-              </div>
+              ))}
+              <SliderNav
+                onPrev={() => go(-1)}
+                onNext={() => go(1)}
+                className="absolute bottom-8 left-12 z-10"
+              />
+            </div>
+
+            {/* RIGHT — per-card tint crossfade + phone-in-hand (bleed, drops
+                the new screen in on change) */}
+            <div className="relative">
+              {superApp.steps.map((s, i) => (
+                <div
+                  key={s.title}
+                  aria-hidden
+                  className={cn(
+                    "absolute inset-0 bg-gradient-to-b to-surface transition-opacity duration-500",
+                    TINT[s.tint],
+                  )}
+                  style={{ opacity: active === i ? 1 : 0 }}
+                />
+              ))}
+              <PhoneStory active={active} mode="bleed" />
             </div>
           </div>
-        )}
 
-        {/* Mobile (always) + desktop reduced-motion: stacked list. */}
-        <div
-          className={
-            reduce
-              ? "flex w-full max-w-[26rem] flex-col gap-8"
-              : "flex w-full max-w-[26rem] flex-col gap-8 lg:hidden"
-          }
-        >
-          {superApp.steps.map((step, i) => (
-            <StackedStep key={step.title} step={step} index={i} />
-          ))}
+          {/* Mobile — single-card slider: phone over copy, arrows below. */}
+          <div
+            className={cn(
+              "mx-auto flex max-w-[26rem] flex-col gap-6 overflow-hidden rounded-2xl border border-divider bg-gradient-to-b to-surface p-6 lg:hidden",
+              TINT[step.tint],
+            )}
+          >
+            <div className="mx-auto w-full max-w-[15rem]">
+              <PhoneStory active={active} />
+            </div>
+            <StepCopy step={step} />
+            <SliderNav
+              onPrev={() => go(-1)}
+              onNext={() => go(1)}
+              className="mt-2"
+            />
+          </div>
         </div>
       </Stack>
     </Section>

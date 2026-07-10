@@ -207,13 +207,10 @@
      Right phone column is position:sticky; left text blocks scroll. The active
      block is full opacity, the rest dimmed. On step change the new UI screen
      drops in from above and crossfades, clipped to the phone's screen rect. */
-  /* FIXED card height (Figma card is 1200×680). Caps to the viewport so the
-     pinned card always fits; the scroll distance lives in an invisible driver. */
+  /* Card height (Figma card is 1200×680). Caps to the viewport so the slider
+     card always fits without pushing the section too tall. */
   --story-card-h: min(42.5rem, calc(100svh - 7rem));
-  /* Pin offset — vertically centre the card in the viewport, but never tuck it
-     under the nav (≥5.5rem). */
-  --story-pin-top: max(5.5rem, calc((100svh - var(--story-card-h)) / 2));
-  --story-step-scroll: 80vh; /* scroll length that advances one card (≈1 screen) */
+  --story-cycle-ms: 4000; /* super-app slider auto-advance time (read in JS) */
   --story-phone-w: 86%; /* hand width within the phone column (bleed mode) */
   --story-mask-fade: 74%; /* where the hand's bottom fade begins */
   --story-drop-ms: 600; /* screen fall-in duration (read in JS) */
