@@ -1,13 +1,15 @@
 /**
- * Section #6 "The super app" — sticky scrollytelling. One phone view per step;
- * the right phone stays pinned while these blocks scroll on the left. Copy is
- * working text derived from the product pillars (Figma only specced step 1);
- * `screen` is empty until the real per-step UI exports land (Media placeholder).
+ * Section #6 "The super app" — a card slider. Each step is one {copy + phone
+ * screen} card; the ‹ › arrows and a ~4s auto-advance switch between them.
+ * Copy is working text derived from the product pillars (Figma only specced
+ * step 1); each `screen` is the per-step UI export shown in the phone-in-hand.
  */
 export const superApp = {
   chip: "Everything in one app",
   // Two centred lines (Figma breaks after the first sentence).
   title: ["Less coordinating.", "More caring."],
+  // Slider prev/next control labels (a11y).
+  nav: { prev: "Previous", next: "Next" },
   // Cards, copy and per-card tints are 1:1 from Figma (24990:688 + 24995:1035).
   steps: [
     {
