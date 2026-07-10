@@ -60,6 +60,7 @@ export function Header() {
           {...sprout(0.1)}
         />
         <p className="relative z-10 px-4 py-3 text-center text-body text-foreground-inverse">
+          <span className="hidden sm:inline">{nav.announcement.lead} </span>
           {nav.announcement.prefix}{" "}
           {nav.announcement.platforms.map((platform, i) => (
             <span key={platform}>

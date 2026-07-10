@@ -3,7 +3,9 @@ import { anchors, links } from "./links"
 export const nav = {
   brand: "Brevy",
   announcement: {
-    prefix: "For Brevy Caregivers: Available Now on",
+    // `lead` is desktop-only; mobile shortens to just "Available Now on …".
+    lead: "For Brevy Caregivers:",
+    prefix: "Available Now on",
     platforms: ["iOS", "Android"],
     conjunction: "and",
   },
