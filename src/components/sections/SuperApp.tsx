@@ -1,7 +1,7 @@
 "use client"
 
-import { useEffect, useRef, useState } from "react"
-import { motion, useInView, useReducedMotion, type PanInfo } from "framer-motion"
+import { useEffect, useRef, useState, type TouchEvent as RTouchEvent } from "react"
+import { useInView, useReducedMotion } from "framer-motion"
 import { Section, Stack, Reveal, Badge, Text } from "@/components/primitives"
 import { SectionHeader, PhoneStory } from "@/components/patterns"
 import { cn } from "@/lib/utils"
@@ -24,9 +24,9 @@ const TINT: Record<string, string> = {
 const ArrowLeftIcon = Icon.arrowLeft
 const ArrowRightIcon = Icon.arrow
 
-// Mobile swipe thresholds: switch on a >50px drag or a fast (>500) flick.
+// Mobile swipe thresholds: switch on a >50px drag or a fast (>0.5 px/ms) flick.
 const SWIPE_DISTANCE = 50
-const SWIPE_VELOCITY = 500
+const SWIPE_VELOCITY = 0.5
 
 function StepCopy({ step }: { step: Step }) {
   return (
@@ -103,14 +103,29 @@ export function SuperApp() {
 
   const go = (dir: number) => setActive((a) => (a + dir + n) % n)
 
-  // Mobile swipe (runs alongside the arrows + auto-advance). A drag past the
-  // distance OR a fast flick past the velocity switches card; direction is the
-  // sign of the horizontal offset/velocity. Because it calls `go` → setActive,
-  // the auto-advance effect re-runs and the timer resets, exactly like a click.
-  const onSwipe = (_: unknown, info: PanInfo) => {
-    const { offset, velocity } = info
-    if (offset.x < -SWIPE_DISTANCE || velocity.x < -SWIPE_VELOCITY) go(1)
-    else if (offset.x > SWIPE_DISTANCE || velocity.x > SWIPE_VELOCITY) go(-1)
+  // Mobile swipe via native touch events (more reliable than a framer drag on
+  // real devices, and never fights vertical scroll: we never preventDefault, so
+  // the browser keeps scrolling). Runs alongside the arrows + auto-advance.
+  const swipeStart = useRef<{ x: number; y: number; t: number } | null>(null)
+
+  const onTouchStart = (e: RTouchEvent<HTMLDivElement>) => {
+    const t = e.touches[0]
+    swipeStart.current = { x: t.clientX, y: t.clientY, t: e.timeStamp }
+  }
+  const onTouchEnd = (e: RTouchEvent<HTMLDivElement>) => {
+    const start = swipeStart.current
+    swipeStart.current = null
+    if (!start) return
+    const t = e.changedTouches[0]
+    const dx = t.clientX - start.x
+    const dy = t.clientY - start.y
+    // A vertical-dominant gesture is a page scroll — ignore it.
+    if (Math.abs(dx) <= Math.abs(dy)) return
+    const speed = Math.abs(dx) / (e.timeStamp - start.t || 1)
+    if (Math.abs(dx) < SWIPE_DISTANCE && speed < SWIPE_VELOCITY) return
+    // Left → next, right → prev. Same go() as the arrows, so it wraps and
+    // resets the auto-advance timer (the effect is keyed to `active`).
+    go(dx < 0 ? 1 : -1)
   }
 
   // Auto-advance while the slider is in view. Keyed to `active`, so an arrow
@@ -188,16 +203,12 @@ export function SuperApp() {
           </div>
 
           {/* Mobile — single-card slider: phone over copy, arrows below.
-              Horizontal drag adds swipe (drag="x" keeps vertical page scroll
-              working — framer sets touch-action: pan-y). Elastic + snap back to
-              origin; onDragEnd decides the switch. */}
-          <motion.div
-            drag="x"
-            dragConstraints={{ left: 0, right: 0 }}
-            dragElastic={0.15}
-            onDragEnd={onSwipe}
+              Swipe left/right switches cards (native touch handlers). */}
+          <div
+            onTouchStart={onTouchStart}
+            onTouchEnd={onTouchEnd}
             className={cn(
-              "mx-auto flex max-w-[26rem] touch-pan-y flex-col gap-6 overflow-hidden rounded-2xl border border-divider bg-gradient-to-b to-surface p-6 lg:hidden",
+              "mx-auto flex max-w-[26rem] flex-col gap-6 overflow-hidden rounded-2xl border border-divider bg-gradient-to-b to-surface p-6 lg:hidden",
               TINT[step.tint],
             )}
           >
@@ -210,7 +221,7 @@ export function SuperApp() {
               onNext={() => go(1)}
               className="mt-2"
             />
-          </motion.div>
+          </div>
         </div>
       </Stack>
     </Section>
