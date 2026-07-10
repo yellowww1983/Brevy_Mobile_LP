@@ -28,6 +28,8 @@ const ArrowRightIcon = Icon.arrow
 const SWIPE_DISTANCE = 50
 const SWIPE_VELOCITY = 0.5
 
+type SwipePoint = { x: number; y: number; t: number }
+
 function StepCopy({ step }: { step: Step }) {
   return (
     <div className="flex flex-col gap-3">
@@ -106,22 +108,33 @@ export function SuperApp() {
   // Mobile swipe via native touch events (more reliable than a framer drag on
   // real devices, and never fights vertical scroll: we never preventDefault, so
   // the browser keeps scrolling). Runs alongside the arrows + auto-advance.
-  const swipeStart = useRef<{ x: number; y: number; t: number } | null>(null)
+  const swipeStart = useRef<SwipePoint | null>(null)
+  const swipeLast = useRef<SwipePoint | null>(null)
 
   const onTouchStart = (e: RTouchEvent<HTMLDivElement>) => {
     const t = e.touches[0]
-    swipeStart.current = { x: t.clientX, y: t.clientY, t: e.timeStamp }
+    const pt = { x: t.clientX, y: t.clientY, t: e.timeStamp }
+    swipeStart.current = pt
+    swipeLast.current = pt
   }
-  const onTouchEnd = (e: RTouchEvent<HTMLDivElement>) => {
+  const onTouchMove = (e: RTouchEvent<HTMLDivElement>) => {
+    const t = e.touches[0]
+    swipeLast.current = { x: t.clientX, y: t.clientY, t: e.timeStamp }
+  }
+  // Resolve on touchend AND touchcancel: iOS Safari fires touchcancel (not
+  // touchend) once a moving gesture is reclassified as a scroll, so a horizontal
+  // swipe that never emits touchend would otherwise be lost. Use the last
+  // tracked point rather than changedTouches so a cancelled gesture still counts.
+  const endSwipe = () => {
     const start = swipeStart.current
+    const last = swipeLast.current
     swipeStart.current = null
-    if (!start) return
-    const t = e.changedTouches[0]
-    const dx = t.clientX - start.x
-    const dy = t.clientY - start.y
+    if (!start || !last) return
+    const dx = last.x - start.x
+    const dy = last.y - start.y
     // A vertical-dominant gesture is a page scroll — ignore it.
     if (Math.abs(dx) <= Math.abs(dy)) return
-    const speed = Math.abs(dx) / (e.timeStamp - start.t || 1)
+    const speed = Math.abs(dx) / (last.t - start.t || 1)
     if (Math.abs(dx) < SWIPE_DISTANCE && speed < SWIPE_VELOCITY) return
     // Left → next, right → prev. Same go() as the arrows, so it wraps and
     // resets the auto-advance timer (the effect is keyed to `active`).
@@ -206,7 +219,9 @@ export function SuperApp() {
               Swipe left/right switches cards (native touch handlers). */}
           <div
             onTouchStart={onTouchStart}
-            onTouchEnd={onTouchEnd}
+            onTouchMove={onTouchMove}
+            onTouchEnd={endSwipe}
+            onTouchCancel={endSwipe}
             className={cn(
               "mx-auto flex max-w-[26rem] flex-col gap-6 overflow-hidden rounded-2xl border border-divider bg-gradient-to-b to-surface p-6 lg:hidden",
               TINT[step.tint],
