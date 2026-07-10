@@ -203,6 +203,9 @@
      mechanic): content scrolling through it dissolves. */
   --hero-glass-band-h: 13rem;
 
+  /* Hero EVV badge: marquee scroll duration on mobile (one text copy / cycle). */
+  --hero-marquee-duration: 9s;
+
   /* ---- Super-app scrollytelling (#6): sticky phone + screen-fall ----
      Right phone column is position:sticky; left text blocks scroll. The active
      block is full opacity, the rest dimmed. On step change the new UI screen
@@ -546,6 +549,19 @@
     }
     75% {
       transform: translateY(var(--hero-float-amp));
+    }
+  }
+
+  /* Hero EVV badge callout marquee (mobile only, rendered off under reduced
+     motion). Two identical copies sit side by side; shifting the track by one
+     copy width (-50%) loops seamlessly. */
+  .hero-marquee {
+    animation: hero-marquee var(--hero-marquee-duration, 9s) linear infinite;
+    will-change: transform;
+  }
+  @keyframes hero-marquee {
+    to {
+      transform: translateX(-50%);
     }
   }
 }
