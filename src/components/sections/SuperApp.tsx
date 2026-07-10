@@ -52,8 +52,10 @@ function SliderNav({
   onNext: () => void
   className?: string
 }) {
+  // Figma 25181-584 (default) / 25182-611 (hover): white circle, 1px neutral
+  // edge + xs shadow; on hover the border and glyph turn emerald (no fill shift).
   const btn =
-    "grid size-12 place-items-center rounded-full border border-divider text-foreground-muted transition-colors hover:bg-surface-soft hover:text-foreground"
+    "grid size-12 place-items-center rounded-full border border-divider bg-background text-foreground-muted shadow-sm transition-colors hover:border-accent-deep hover:text-accent-deep"
   return (
     <div className={cn("flex gap-2", className)}>
       <button
@@ -62,7 +64,7 @@ function SliderNav({
         onClick={onPrev}
         className={btn}
       >
-        <ArrowLeftIcon className="size-5" />
+        <ArrowLeftIcon className="size-6" />
       </button>
       <button
         type="button"
@@ -70,7 +72,7 @@ function SliderNav({
         onClick={onNext}
         className={btn}
       >
-        <ArrowRightIcon className="size-5" />
+        <ArrowRightIcon className="size-6" />
       </button>
     </div>
   )
