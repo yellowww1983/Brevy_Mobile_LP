@@ -1,7 +1,7 @@
 "use client"
 
 import { useEffect, useRef, useState } from "react"
-import { useInView, useReducedMotion } from "framer-motion"
+import { motion, useInView, useReducedMotion, type PanInfo } from "framer-motion"
 import { Section, Stack, Reveal, Badge, Text } from "@/components/primitives"
 import { SectionHeader, PhoneStory } from "@/components/patterns"
 import { cn } from "@/lib/utils"
@@ -23,6 +23,10 @@ const TINT: Record<string, string> = {
 
 const ArrowLeftIcon = Icon.arrowLeft
 const ArrowRightIcon = Icon.arrow
+
+// Mobile swipe thresholds: switch on a >50px drag or a fast (>500) flick.
+const SWIPE_DISTANCE = 50
+const SWIPE_VELOCITY = 500
 
 function StepCopy({ step }: { step: Step }) {
   return (
@@ -99,6 +103,16 @@ export function SuperApp() {
 
   const go = (dir: number) => setActive((a) => (a + dir + n) % n)
 
+  // Mobile swipe (runs alongside the arrows + auto-advance). A drag past the
+  // distance OR a fast flick past the velocity switches card; direction is the
+  // sign of the horizontal offset/velocity. Because it calls `go` → setActive,
+  // the auto-advance effect re-runs and the timer resets, exactly like a click.
+  const onSwipe = (_: unknown, info: PanInfo) => {
+    const { offset, velocity } = info
+    if (offset.x < -SWIPE_DISTANCE || velocity.x < -SWIPE_VELOCITY) go(1)
+    else if (offset.x > SWIPE_DISTANCE || velocity.x > SWIPE_VELOCITY) go(-1)
+  }
+
   // Auto-advance while the slider is in view. Keyed to `active`, so an arrow
   // click (which changes `active`) tears down the pending timeout and starts a
   // fresh one — the countdown resets on interaction with no extra bookkeeping.
@@ -173,10 +187,17 @@ export function SuperApp() {
             </div>
           </div>
 
-          {/* Mobile — single-card slider: phone over copy, arrows below. */}
-          <div
+          {/* Mobile — single-card slider: phone over copy, arrows below.
+              Horizontal drag adds swipe (drag="x" keeps vertical page scroll
+              working — framer sets touch-action: pan-y). Elastic + snap back to
+              origin; onDragEnd decides the switch. */}
+          <motion.div
+            drag="x"
+            dragConstraints={{ left: 0, right: 0 }}
+            dragElastic={0.15}
+            onDragEnd={onSwipe}
             className={cn(
-              "mx-auto flex max-w-[26rem] flex-col gap-6 overflow-hidden rounded-2xl border border-divider bg-gradient-to-b to-surface p-6 lg:hidden",
+              "mx-auto flex max-w-[26rem] touch-pan-y flex-col gap-6 overflow-hidden rounded-2xl border border-divider bg-gradient-to-b to-surface p-6 lg:hidden",
               TINT[step.tint],
             )}
           >
@@ -189,7 +210,7 @@ export function SuperApp() {
               onNext={() => go(1)}
               className="mt-2"
             />
-          </div>
+          </motion.div>
         </div>
       </Stack>
     </Section>
