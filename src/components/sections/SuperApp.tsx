@@ -105,10 +105,8 @@ export function SuperApp() {
 
   const go = (dir: number) => setActive((a) => (a + dir + n) % n)
 
-  // Mobile swipe via native touch events. Runs alongside arrows + auto-advance.
-  // TODO(debug): temporary on-card readout while diagnosing on-device — remove.
-  const [dbg, setDbg] = useState("touch: waiting…")
-  const dbgN = useRef({ s: 0, m: 0 })
+  // Mobile swipe via native touch events. Runs alongside arrows + auto-advance;
+  // never preventDefault, so vertical page scroll stays native.
   const swipeStart = useRef<SwipePoint | null>(null)
   const swipeLast = useRef<SwipePoint | null>(null)
 
@@ -117,36 +115,27 @@ export function SuperApp() {
     const pt = { x: t.clientX, y: t.clientY, t: e.timeStamp }
     swipeStart.current = pt
     swipeLast.current = pt
-    dbgN.current = { s: dbgN.current.s + 1, m: 0 }
-    setDbg(`start#${dbgN.current.s}…`)
   }
   const onTouchMove = (e: RTouchEvent<HTMLDivElement>) => {
     const t = e.touches[0]
     swipeLast.current = { x: t.clientX, y: t.clientY, t: e.timeStamp }
-    dbgN.current.m += 1
   }
   // Resolve on touchend AND touchcancel (iOS drops touchend when a moving
   // gesture is read as a scroll). Use the last tracked point.
-  const endSwipe = (kind: string) => {
+  const endSwipe = () => {
     const start = swipeStart.current
     const last = swipeLast.current
     swipeStart.current = null
-    const m = dbgN.current.m
-    if (!start || !last) {
-      setDbg(`${kind} m${m} · no start`)
-      return
-    }
-    const dx = Math.round(last.x - start.x)
-    const dy = Math.round(last.y - start.y)
-    const horiz = Math.abs(dx) > Math.abs(dy)
+    if (!start || !last) return
+    const dx = last.x - start.x
+    const dy = last.y - start.y
+    // A vertical-dominant gesture is a page scroll — ignore it.
+    if (Math.abs(dx) <= Math.abs(dy)) return
     const speed = Math.abs(dx) / (last.t - start.t || 1)
-    const pass = horiz && (Math.abs(dx) >= SWIPE_DISTANCE || speed >= SWIPE_VELOCITY)
-    setDbg(
-      `${kind} m${m} dx${dx} dy${dy} → ${pass ? (dx < 0 ? "NEXT" : "PREV") : horiz ? "small" : "vertical"}`,
-    )
+    if (Math.abs(dx) < SWIPE_DISTANCE && speed < SWIPE_VELOCITY) return
     // Left → next, right → prev. Same go() as the arrows, so it wraps and
     // resets the auto-advance timer (the effect is keyed to `active`).
-    if (pass) go(dx < 0 ? 1 : -1)
+    go(dx < 0 ? 1 : -1)
   }
 
   // Auto-advance while the slider is in view. Keyed to `active`, so an arrow
@@ -228,17 +217,13 @@ export function SuperApp() {
           <div
             onTouchStart={onTouchStart}
             onTouchMove={onTouchMove}
-            onTouchEnd={() => endSwipe("end")}
-            onTouchCancel={() => endSwipe("cancel")}
+            onTouchEnd={endSwipe}
+            onTouchCancel={endSwipe}
             className={cn(
               "mx-auto flex max-w-[26rem] flex-col gap-6 overflow-hidden rounded-2xl border border-divider bg-gradient-to-b to-surface p-6 lg:hidden",
               TINT[step.tint],
             )}
           >
-            {/* TODO(debug): temporary swipe readout — remove after diagnosis */}
-            <div className="rounded-md bg-black px-2 py-1 text-center font-mono text-xs text-white">
-              {dbg}
-            </div>
             <div className="mx-auto w-full max-w-[15rem]">
               <PhoneStory active={active} />
             </div>
