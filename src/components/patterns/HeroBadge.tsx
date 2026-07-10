@@ -1,66 +1,53 @@
 "use client"
 
-import { useEffect, useState } from "react"
-import { AnimatePresence, motion, useReducedMotion } from "framer-motion"
-import { EASE } from "@/lib/motion"
-import { readCssVar } from "@/lib/utils"
+import { useReducedMotion } from "framer-motion"
+import { useMinWidth } from "@/lib/hooks"
 import { hero } from "@/lib/content"
 
 /**
- * Hero chip that cycles through its variants (pill + text) on an interval.
- * The glass shell and orbiting border-beam stay mounted, so the beam never
- * resets; only the inner content crossfades (slide + blur) and the shell
- * width animates (layout) to each variant. Static first variant under
- * reduced motion.
+ * Hero announcement chip: a static date pill + the EVV callout. The callout is
+ * long, so on phones — where it would wrap to three lines — the text becomes a
+ * seamless horizontal marquee while the date pill stays put as an anchor.
+ * Desktop (≥ sm) fits it on one line, so it renders static (no marquee).
+ * Reduced motion (and the pre-hydration frame): static too, wrapping if it must.
  */
 export function HeroBadge() {
-  const variants = hero.badge
+  const { pill, text } = hero.badge[0]
+  const isDesktop = useMinWidth(640)
   const reduce = useReducedMotion()
-  const [index, setIndex] = useState(0)
+  const marquee = !isDesktop && !reduce
 
-  useEffect(() => {
-    if (reduce || variants.length < 2) return
-    const ms = readCssVar("--badge-cycle-ms", 2500)
-    const delay = readCssVar("--badge-cycle-delay-ms", 0)
-
-    let interval: ReturnType<typeof setInterval>
-    const start = setTimeout(() => {
-      interval = setInterval(
-        () => setIndex((prev) => (prev + 1) % variants.length),
-        ms,
-      )
-    }, delay)
-
-    return () => {
-      clearTimeout(start)
-      clearInterval(interval)
-    }
-  }, [reduce, variants.length])
-
-  const variant = variants[index]
-
-  return (
-    <motion.span
-      layout
-      className="border-beam chip-glass inline-block max-w-[20rem] rounded-3xl px-3 py-1.5 text-center text-small font-normal leading-snug text-accent-deep sm:max-w-[40rem] sm:rounded-full sm:px-2 sm:py-1"
-    >
-      <AnimatePresence mode="popLayout" initial={false}>
-        <motion.span
-          key={index}
-          layout
-          initial={reduce ? false : { opacity: 0, y: 5, filter: "blur(4px)" }}
-          animate={{ opacity: 1, y: 0, filter: "blur(0px)" }}
-          exit={reduce ? {} : { opacity: 0, y: -5, filter: "blur(4px)" }}
-          transition={{ duration: 0.4, ease: EASE.out }}
-          className="inline text-balance"
-        >
-          {/* date pill stays on one line; the callout flows and wraps after it */}
+  if (!marquee) {
+    // Static — desktop keeps it on one line; reduced motion / SSR wraps if the
+    // callout doesn't fit (no motion), which is the acceptable fallback.
+    return (
+      <span className="border-beam chip-glass inline-block max-w-[20rem] rounded-3xl px-3 py-1.5 text-center text-small font-normal leading-snug text-accent-deep sm:max-w-[40rem] sm:rounded-full sm:px-2 sm:py-1">
+        <span className="text-balance">
           <span className="mr-1.5 inline-block whitespace-nowrap rounded-full bg-surface-olive px-1.5 align-middle text-accent-deep">
-            {variant.pill}
+            {pill}
           </span>
-          {variant.text}
-        </motion.span>
-      </AnimatePresence>
-    </motion.span>
+          {text}
+        </span>
+      </span>
+    )
+  }
+
+  // Mobile + motion — one line: the pill is fixed and the callout scrolls in a
+  // seamless loop (two copies, shifted one copy width). The inner viewport clips
+  // the overflow; the chip stays overflow-visible so the border-beam isn't cut.
+  return (
+    <span className="border-beam chip-glass inline-flex max-w-[20rem] items-center gap-1.5 rounded-3xl px-3 py-1.5 text-small font-normal leading-snug text-accent-deep">
+      <span className="inline-block shrink-0 whitespace-nowrap rounded-full bg-surface-olive px-1.5 text-accent-deep">
+        {pill}
+      </span>
+      <span className="min-w-0 flex-1 overflow-hidden">
+        <span className="hero-marquee flex w-max whitespace-nowrap">
+          <span className="pr-8">{text}</span>
+          <span aria-hidden className="pr-8">
+            {text}
+          </span>
+        </span>
+      </span>
+    </span>
   )
 }
