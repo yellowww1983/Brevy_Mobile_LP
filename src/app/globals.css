@@ -203,8 +203,9 @@
      mechanic): content scrolling through it dissolves. */
   --hero-glass-band-h: 13rem;
 
-  /* Hero EVV badge: marquee scroll duration on mobile (one text copy / cycle). */
-  --hero-marquee-duration: 9s;
+  /* Hero EVV badge: marquee scroll duration on mobile (one text copy / cycle).
+     Higher = slower. */
+  --hero-marquee-duration: 18s;
 
   /* ---- Super-app scrollytelling (#6): sticky phone + screen-fall ----
      Right phone column is position:sticky; left text blocks scroll. The active
