@@ -52,6 +52,17 @@ export function Header() {
     return () => window.removeEventListener("scroll", onScroll)
   }, [])
 
+  // The menu (and its X) only exist below md — so if the viewport grows to
+  // desktop while it's open, close it, or the pill would stay pinned/fixed and
+  // body scroll locked with no way to dismiss it.
+  useEffect(() => {
+    const mq = window.matchMedia("(min-width: 768px)")
+    const closeIfDesktop = () => mq.matches && setMenuOpen(false)
+    closeIfDesktop()
+    mq.addEventListener("change", closeIfDesktop)
+    return () => mq.removeEventListener("change", closeIfDesktop)
+  }, [])
+
   // While the mobile menu is open: lock body scroll and close on Escape.
   useEffect(() => {
     if (!menuOpen) return
