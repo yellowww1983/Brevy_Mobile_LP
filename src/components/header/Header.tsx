@@ -165,10 +165,10 @@ export function Header() {
       <AnimatePresence>
         {menuOpen && (
           <motion.div
-            // z-[45]: above the hero's fixed bottom progressive-glass and the
-            // sticky CTA band (both z-40, which would otherwise blur the panel),
-            // but below the nav pill (z-50) that holds the ✕.
-            className="fixed inset-0 z-[45] flex flex-col overflow-hidden bg-gradient-to-b from-surface to-background md:hidden"
+            // z-[46]: above the hero's progressive-glass + sticky CTA (z-40) AND
+            // the hero clover badge (z-45, later in the DOM so it would paint
+            // over an equal z), but below the nav pill (z-50) that holds the ✕.
+            className="fixed inset-0 z-[46] flex flex-col overflow-hidden bg-gradient-to-b from-surface to-background md:hidden"
             initial={reduce ? false : { opacity: 0 }}
             animate={{ opacity: 1 }}
             exit={reduce ? {} : { opacity: 0 }}
@@ -176,7 +176,7 @@ export function Header() {
           >
             <span
               aria-hidden
-              className="pointer-events-none absolute inset-x-0 bottom-0 h-1/2 bg-[url('/decor/menu-mountains.png')] bg-contain bg-bottom bg-no-repeat opacity-20"
+              className="pointer-events-none absolute inset-x-0 bottom-0 h-[60%] bg-[url('/decor/menu-mountains.png')] bg-cover bg-bottom bg-no-repeat opacity-20"
             />
             <nav className="relative z-10 flex flex-col px-8 pt-32">
               {nav.links.map((link) => (
