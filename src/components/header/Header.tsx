@@ -95,7 +95,14 @@ export function Header() {
       {/* pt sets the gap above the pill; -mb pulls the hero up by the full
           header height so the sticky nav overlays it. Mobile uses a smaller
           gap so the pill sits closer to the top once the banner scrolls away. */}
-      <header className="section-gutter sticky top-0 z-50 -mb-[88px] pt-4 md:-mb-[112px] md:pt-10">
+      <header
+        className={cn(
+          "section-gutter sticky top-0 z-50 -mb-[88px] pt-4 md:-mb-[112px] md:pt-10",
+          // While the mobile menu is open, pin the pill to the very top so it
+          // never sits under the (now-hidden) banner — no scroll-dependent jump.
+          menuOpen && "!fixed inset-x-0 !top-0",
+        )}
+      >
         <nav
           className={cn(
             "mx-auto flex w-full max-w-[816px] items-center justify-between rounded-full px-6 py-4 transition-[background-color,box-shadow,backdrop-filter] duration-[var(--duration-base)] ease-[var(--ease-out)]",
@@ -176,7 +183,7 @@ export function Header() {
           >
             <span
               aria-hidden
-              className="pointer-events-none absolute inset-x-0 bottom-0 h-[60%] bg-[url('/decor/menu-mountains.png')] bg-cover bg-bottom bg-no-repeat opacity-20"
+              className="pointer-events-none absolute inset-x-0 bottom-0 top-28 bg-[url('/decor/menu-mountains.png')] bg-cover bg-[position:65%_50%] bg-no-repeat opacity-25"
             />
             <nav className="relative z-10 flex flex-col px-8 pt-32">
               {nav.links.map((link) => (
