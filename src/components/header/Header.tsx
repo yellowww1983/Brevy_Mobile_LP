@@ -11,6 +11,7 @@ import { nav } from "@/lib/content"
 
 const ChatIcon = Icon.chat
 const MenuIcon = Icon.menu
+const CloseIcon = Icon.cross
 
 // Brevy clover mark (gradient SVG), bled into the banner corners as decor.
 // Fixed 96x96 (the mark's native size) so it never stretches on resize.
@@ -24,6 +25,7 @@ const leaf =
  */
 export function Header() {
   const [scrolled, setScrolled] = useState(false)
+  const [menuOpen, setMenuOpen] = useState(false)
   const reduce = useReducedMotion()
 
   // Corner leaves sprout in on load (origin-anchored, slight overshoot).
@@ -49,6 +51,19 @@ export function Header() {
     window.addEventListener("scroll", onScroll, { passive: true })
     return () => window.removeEventListener("scroll", onScroll)
   }, [])
+
+  // While the mobile menu is open: lock body scroll and close on Escape.
+  useEffect(() => {
+    if (!menuOpen) return
+    document.body.style.overflow = "hidden"
+    const onKey = (e: KeyboardEvent) =>
+      e.key === "Escape" && setMenuOpen(false)
+    window.addEventListener("keydown", onKey)
+    return () => {
+      document.body.style.overflow = ""
+      window.removeEventListener("keydown", onKey)
+    }
+  }, [menuOpen])
 
   return (
     <>
@@ -125,17 +140,70 @@ export function Header() {
               </AnimatePresence>
             </div>
 
-            {/* Mobile: hamburger (the menu panel is a later step). */}
+            {/* Mobile: hamburger toggles the full-screen menu (turns into ✕). */}
             <button
               type="button"
-              aria-label={nav.menu.label}
+              aria-label={menuOpen ? nav.menu.close : nav.menu.label}
+              aria-expanded={menuOpen}
+              onClick={() => setMenuOpen((open) => !open)}
               className="inline-flex size-9 items-center justify-center rounded-md border border-border-pill text-foreground transition-colors hover:bg-surface-hover md:hidden"
             >
-              <MenuIcon className="size-6" />
+              {menuOpen ? (
+                <CloseIcon className="size-6" />
+              ) : (
+                <MenuIcon className="size-6" />
+              )}
             </button>
           </div>
         </nav>
       </header>
+
+      {/* Mobile menu — full-screen panel under the nav (Figma 22687-2120): the
+          links as large text up top, "New chat" pinned at the bottom, over a
+          beige→white wash with the faint mountains. The nav pill (z-50) stays
+          above it and holds the ✕. Desktop never renders it. */}
+      <AnimatePresence>
+        {menuOpen && (
+          <motion.div
+            // z-[45]: above the hero's fixed bottom progressive-glass and the
+            // sticky CTA band (both z-40, which would otherwise blur the panel),
+            // but below the nav pill (z-50) that holds the ✕.
+            className="fixed inset-0 z-[45] flex flex-col overflow-hidden bg-gradient-to-b from-surface to-background md:hidden"
+            initial={reduce ? false : { opacity: 0 }}
+            animate={{ opacity: 1 }}
+            exit={reduce ? {} : { opacity: 0 }}
+            transition={{ duration: 0.2, ease: EASE.out }}
+          >
+            <span
+              aria-hidden
+              className="pointer-events-none absolute inset-x-0 bottom-0 h-1/2 bg-[url('/decor/menu-mountains.png')] bg-contain bg-bottom bg-no-repeat opacity-20"
+            />
+            <nav className="relative z-10 flex flex-col px-8 pt-32">
+              {nav.links.map((link) => (
+                <a
+                  key={link.href}
+                  href={link.href}
+                  onClick={() => setMenuOpen(false)}
+                  className="flex h-12 items-center text-editorial font-medium text-foreground"
+                >
+                  {link.label}
+                </a>
+              ))}
+            </nav>
+            <div className="relative z-10 mt-auto px-4 pb-4">
+              <Action
+                variant="talk"
+                size="lg"
+                href={nav.cta.href}
+                className="w-full"
+              >
+                <ChatIcon className="size-6" />
+                {nav.cta.label}
+              </Action>
+            </div>
+          </motion.div>
+        )}
+      </AnimatePresence>
     </>
   )
 }

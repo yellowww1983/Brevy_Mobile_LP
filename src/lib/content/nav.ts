@@ -15,6 +15,6 @@ export const nav = {
   ],
   // "New chat" — appears in the nav on scroll (desktop); the Brevy assistant.
   cta: { label: "New chat", href: links.chat },
-  // Mobile menu trigger (the panel itself is a later step).
-  menu: { label: "Open menu" },
+  // Mobile menu trigger + its full-screen panel (links + New chat).
+  menu: { label: "Open menu", close: "Close menu" },
 } as const
