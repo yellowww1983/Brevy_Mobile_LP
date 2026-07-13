@@ -79,7 +79,7 @@ export function Header() {
       <header className="section-gutter sticky top-0 z-50 -mb-[88px] pt-4 md:-mb-[112px] md:pt-10">
         <nav
           className={cn(
-            "mx-auto flex w-full max-w-[816px] items-center justify-between rounded-lg px-6 py-4 transition-[background-color,box-shadow,backdrop-filter] duration-[var(--duration-base)] ease-[var(--ease-out)]",
+            "mx-auto flex w-full max-w-[816px] items-center justify-between rounded-full px-6 py-4 transition-[background-color,box-shadow,backdrop-filter] duration-[var(--duration-base)] ease-[var(--ease-out)]",
             scrolled
               ? "bg-surface/70 shadow-lg backdrop-blur-[var(--nav-glass-blur)]"
               : "bg-surface shadow-navbar backdrop-blur-0",
