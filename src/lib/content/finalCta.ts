@@ -8,7 +8,7 @@ import { links } from "./links"
  */
 export const finalCta = {
   // Two centred lines (Figma breaks after the first sentence).
-  title: ["Care for people.", "We'll handle the rest."],
+  title: ["Care for your loved ones.", "We'll handle the rest."],
   subhead:
     "Brevy caregivers get the app, steady hours, and a team that has their back. Want to see if it's right for you?",
   cta: { label: "Get started", href: links.talk },
