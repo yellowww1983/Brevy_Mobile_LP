@@ -1,12 +1,16 @@
 "use client"
 
 import { useEffect, useState } from "react"
-import { motion, useReducedMotion } from "framer-motion"
+import { AnimatePresence, motion, useReducedMotion } from "framer-motion"
 import { cn } from "@/lib/utils"
 import { grow, EASE } from "@/lib/motion"
 import { Action } from "@/components/primitives"
 import { Logo } from "@/components/patterns"
+import { Icon } from "@/lib/icons"
 import { nav } from "@/lib/content"
+
+const ChatIcon = Icon.chat
+const MenuIcon = Icon.menu
 
 // Brevy clover mark (gradient SVG), bled into the banner corners as decor.
 // Fixed 96x96 (the mark's native size) so it never stretches on resize.
@@ -100,9 +104,35 @@ export function Header() {
                 </Action>
               ))}
             </div>
-            <Action variant="talk" size="sm" href={nav.cta.href}>
-              {nav.cta.label}
-            </Action>
+
+            {/* Desktop: "New chat" slides in once scrolled past the hero. */}
+            <div className="hidden md:block">
+              <AnimatePresence>
+                {scrolled && (
+                  <motion.div
+                    key="new-chat"
+                    initial={reduce ? false : { opacity: 0, scale: 0.9 }}
+                    animate={{ opacity: 1, scale: 1 }}
+                    exit={reduce ? {} : { opacity: 0, scale: 0.9 }}
+                    transition={{ duration: 0.25, ease: EASE.out }}
+                  >
+                    <Action variant="talk" size="sm" href={nav.cta.href}>
+                      <ChatIcon className="size-5" />
+                      {nav.cta.label}
+                    </Action>
+                  </motion.div>
+                )}
+              </AnimatePresence>
+            </div>
+
+            {/* Mobile: hamburger (the menu panel is a later step). */}
+            <button
+              type="button"
+              aria-label={nav.menu.label}
+              className="inline-flex size-9 items-center justify-center rounded-md border border-border-pill text-foreground transition-colors hover:bg-surface-hover md:hidden"
+            >
+              <MenuIcon className="size-6" />
+            </button>
           </div>
         </nav>
       </header>

@@ -25,6 +25,8 @@ import {
   CircleCheck,
   CircleDollarSign,
   Receipt,
+  Menu,
+  MessageCircleHeart,
 } from "lucide-react"
 import { AppleLogo, AndroidLogo } from "@/lib/brand-icons"
 
@@ -53,6 +55,8 @@ export const Icon = {
   circleCheck: CircleCheck,
   dollar: CircleDollarSign,
   stub: Receipt,
+  menu: Menu,
+  chat: MessageCircleHeart,
 } as const
 
 export type IconName = keyof typeof Icon

@@ -5,6 +5,9 @@
 export const links = {
   enroll: "https://brevy.com/funnel", // "Get started" — hero + nav funnel
   talk: "https://brevy.com/funnel", // "Get started" — final-CTA funnel (same funnel)
+  caregiving: "https://brevy.com/caregiving", // nav: "Get paid for caregiving"
+  guide: "https://brevy.com/guide", // nav: "Eldercare Guide"
+  chat: "https://brevy.com/", // nav: "New chat" (Brevy assistant)
   download: "#", // generic "download the app" smart link (URL TBD)
   iosApp: "https://apps.apple.com/us/app/brevy-care/id6775679941", // App Store
   androidApp: "https://play.google.com/store/apps/details?id=com.brevy.caregiverapp", // Google Play

@@ -1,4 +1,4 @@
-import { anchors, links } from "./links"
+import { links } from "./links"
 
 export const nav = {
   brand: "Brevy",
@@ -10,9 +10,11 @@ export const nav = {
     conjunction: "and",
   },
   links: [
-    { label: "How it works", href: anchors.howItWorks },
-    { label: "Features", href: anchors.features },
-    { label: "Compliance", href: anchors.compliance },
+    { label: "Get paid for caregiving", href: links.caregiving },
+    { label: "Eldercare Guide", href: links.guide },
   ],
-  cta: { label: "Get started", href: links.enroll },
+  // "New chat" — appears in the nav on scroll (desktop); the Brevy assistant.
+  cta: { label: "New chat", href: links.chat },
+  // Mobile menu trigger (the panel itself is a later step).
+  menu: { label: "Open menu" },
 } as const

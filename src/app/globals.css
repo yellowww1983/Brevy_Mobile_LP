@@ -107,6 +107,7 @@
   --color-divider: var(--brevy-neutral-200); /* compare: row/column dividers */
   --color-border-field: var(--brevy-neutral-300); /* mock inputs / cards / badges */
   --color-badge-border: var(--brevy-olive-300); /* trust badge circle edge (#DCE7CF) */
+  --color-border-pill: var(--brevy-beige-600); /* nav pill / hamburger edge (#DEDAD6) */
 
   /* ---- Compare feedback (positive olive / negative coral) ---- */
   --color-positive-fill: var(--brevy-olive-100);
@@ -337,6 +338,7 @@
   --color-divider: var(--color-divider);
   --color-border-field: var(--color-border-field);
   --color-badge-border: var(--color-badge-border);
+  --color-border-pill: var(--color-border-pill);
 
   --color-positive-fill: var(--color-positive-fill);
   --color-positive-ring: var(--color-positive-ring);
