@@ -183,7 +183,7 @@ export function Header() {
           >
             <span
               aria-hidden
-              className="pointer-events-none absolute inset-x-0 bottom-0 top-28 bg-[url('/decor/menu-mountains.png')] bg-cover bg-[position:65%_50%] bg-no-repeat opacity-25"
+              className="pointer-events-none absolute inset-x-0 bottom-0 top-28 bg-[url('/decor/menu-mountains.webp')] bg-cover bg-[position:65%_50%] bg-no-repeat"
             />
             <nav className="relative z-10 flex flex-col px-8 pt-32">
               {nav.links.map((link) => (
