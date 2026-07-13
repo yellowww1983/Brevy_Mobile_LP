@@ -1,33 +1,23 @@
 import { cn } from "@/lib/utils"
 
 type LogoProps = {
-  tone?: "default" | "inverse"
   className?: string
 }
 
 /**
- * Brevy lockup: clover mark (40px gradient-free brand SVG) + "Brevy"
- * wordmark in Hedvig. Mark served as background-image (crisp SVG, no
- * image optimizer). Wordmark is Hedvig green; swap for the official
- * logotype SVG when the brand pack lands.
+ * Brevy lockup — the official logotype SVG (clover mark + "Brevy" wordmark,
+ * Figma 24930-585 / 25188:691). Served as a background-image so the SVG stays
+ * crisp (no image optimizer). 115×40 natural, rendered at 40px tall.
  */
-export function Logo({ tone = "default", className }: LogoProps) {
-  const inverse = tone === "inverse"
-
+export function Logo({ className }: LogoProps) {
   return (
-    <span className={cn("inline-flex items-center gap-3", className)}>
-      <span
-        aria-hidden
-        className="size-10 shrink-0 bg-[url('/brand/brevy-mark.svg')] bg-contain bg-center bg-no-repeat"
-      />
-      <span
-        className={cn(
-          "font-display text-h3 leading-none",
-          inverse ? "text-foreground-inverse" : "text-accent",
-        )}
-      >
-        Brevy
-      </span>
-    </span>
+    <span
+      role="img"
+      aria-label="Brevy"
+      className={cn(
+        "block h-10 w-[115px] bg-[url('/logo.svg')] bg-contain bg-left bg-no-repeat",
+        className,
+      )}
+    />
   )
 }
