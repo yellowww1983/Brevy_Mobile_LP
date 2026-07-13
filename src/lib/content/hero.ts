@@ -13,7 +13,7 @@ export const hero = {
   badge: [
     {
       pill: "Coming August 3, 2026",
-      text: "Clock in and out directly in the Brevy app, no more HAeXchange+",
+      text: "Clock in and out directly in the Brevy app, no more HHAeXchange+",
     },
   ],
   title: "Your caregiver super app",
