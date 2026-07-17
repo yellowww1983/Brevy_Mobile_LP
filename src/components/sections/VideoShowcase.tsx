@@ -15,7 +15,11 @@ export function VideoShowcase() {
           />
         </Reveal>
         <Reveal blur delay={0.12} className="w-full">
-          <VideoPlayer label={video.playLabel} poster={assets.videoPoster} />
+          <VideoPlayer
+            label={video.playLabel}
+            src={video.src}
+            poster={assets.videoPoster}
+          />
         </Reveal>
       </Stack>
     </Section>
